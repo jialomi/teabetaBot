@@ -18,7 +18,7 @@ module.exports = {
                 const roleId = allroleIds[i]
                 const role = guild.roles.cache.get(roleId)
 
-                if (i < 2) {
+                if (allmemberRoles[i].length < 1) {
                     allmemberRoles[i] = role.members.map(m => m.toString())
                 } else {
                     allmemberRoles[i] = role.members
