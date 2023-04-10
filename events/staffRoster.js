@@ -12,13 +12,15 @@ module.exports = {
             const maester = await client.guilds.cache.get(guildId).emojis.cache.find(emoji => emoji.name === 'maester');
 
             const allroleIds = ["288382741450588160", "716773257683927101", "288382736480337920", "438818482692423683", "455248257161887754"]
-            let allmemberRoles =["","","","",""];
+            let allmemberRoles =[];
 
             for (let i = 0; i < allroleIds.length; i ++) {
                 const roleId = allroleIds[i]
                 const role = guild.roles.cache.get(roleId)
 
-                if (allmemberRoles[i].length < 1) {
+                allmemberRoles[i] = role.members.map(m => m.toString())
+
+                if (allmemberRoles[i].length < 2) {
                     allmemberRoles[i] = role.members.map(m => m.toString())
                 } else {
                     allmemberRoles[i] = role.members
