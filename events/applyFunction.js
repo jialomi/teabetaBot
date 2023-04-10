@@ -2,6 +2,7 @@ const { Events, EmbedBuilder, ButtonBuilder, ModalBuilder, ActionRowBuilder, Tex
 const memberRole = "288385193285386248"
 const guestRole = "615837413117526027"
 const grandcounsilRole = "288382736480337920"
+const inboxChannelId = "1094636463011930215"
 
 function isImage(url) {
     return /^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg|JPG|JPEG|PNG|WEBP|AVIF|GIF|SVG)$/.test(url);
@@ -247,6 +248,25 @@ module.exports = {
                     value: `<@${interaction.user.id}>`
                 }
             )
+            
+            const dmEmbed = new EmbedBuilder()
+            .setTitle("Congratulation! Your Application Has been Approved")
+            .setDescription("You are now a part of THE NORTH, all that is left to do is invite you to the club on Trove!")
+            .setColor(0x0000FF)
+            .setAuthor(
+                {
+                    name:interaction.client.user.username, 
+                    iconURL: interaction.client.user.displayAvatarURL()
+                }
+            )
+            .setThumbnail(thumbnail)
+            .setImage("https://cdn.discordapp.com/attachments/756494646678519878/758105625594036295/image0_1.png")
+            .setFields(
+                {
+                    name: "Club Invite Step",
+                    value: "It's Simple, All you have to do is, when you are in game and ready to join, press the request button below and it will inform our Staff team that you are ready to join!\nEnjoy!"
+                }
+            )
 
             const requestinviteButton = new ButtonBuilder()
             .setCustomId("requestinviteButton")
@@ -256,17 +276,18 @@ module.exports = {
             const row = new ActionRowBuilder().addComponents(requestinviteButton)
 
             const userMember = await guild.members.fetch(discordID)
+            const user = await interaction.client.users.fetch(discordID)
             await userMember.roles.remove(guestRole)
             await userMember.roles.add(memberRole)
             await userMember.setNickname(ign)
+            await user.send({content: `Congratulations ${discordTag} ! Your Club Application has been Approved! Follow the Steps Below to fully join THE NORTH!`, embeds: [dmEmbed], components: [row]})
 
             const channelId = interaction.channelId
 
             const channel = interaction.client.channels.cache.get(channelId)
             const editMessage = await channel.messages.fetch(interaction.message.id)
 
-            let text = discordTag + " \n```Once you are ready to be invited, press the blue invite button below```"
-            editMessage.edit({ content: text, embeds: [embed], components: [row] })
+            editMessage.edit({ embeds: [embed], components: [] })
 
             interaction.reply({content: "Approve Successful", ephemeral: true})
 
@@ -277,6 +298,32 @@ module.exports = {
                     console.error(error)
                     }
             }, 10000)
+        }
+
+        if (interaction.customId === "requestinviteButton") {
+
+            const embed = new EmbedBuilder()
+            .setTitle("Request Sent, You should be invited into the club soon!")
+            .setDescription("Be patient! you are almost there!")
+            .setThumbnail(interaction.user.displayAvatarURL())
+            .setColor(0x00FF00)
+            .setImage("https://cdn.discordapp.com/attachments/756494646678519878/758105625594036295/image0_1.png")
+            .setAuthor(
+                {
+                    name: interaction.client.user.username,
+                    iconURL: interaction.client.user.displayAvatarURL()
+                }
+            )
+
+            console.log(interaction.channelId)
+
+            const channel = await interaction.client.channels.fetch(interaction.channelId)
+            const message = await channel.messages.fetch(interaction.message.id)
+            await message.edit({ content: `Great! The Request has been sent!`, embeds: [embed], components: []})
+
+            const inboxChannel = interaction.client.channels.cache.get(inboxChannelId)
+            await inboxChannel.send(`<@${interaction.user.id}> is ready to be invited to THE NORTH`)
+
         }
 
         // Application Reject Process Modal (Part 1)
