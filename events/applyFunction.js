@@ -160,7 +160,7 @@ module.exports = {
             .addComponents(clubApprove, clubDeny)
 
             await interaction.reply({
-                content: "Request Sent to <#1095111479449092276>",
+                content: "Request Sent",
                 ephemeral: true
             })
 
