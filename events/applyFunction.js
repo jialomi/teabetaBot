@@ -175,7 +175,7 @@ module.exports = {
             }, 5000)
         }
 
-        // Application Approve Process
+        // Application Approve Process (Part 1)
         if (interaction.customId === "clubApprove") {
 
             const guild = interaction.guild
@@ -276,11 +276,14 @@ module.exports = {
 
             const row = new ActionRowBuilder().addComponents(requestinviteButton)
 
-            const userMember = await guild.members.fetch(discordID)
+            const confirminviteButton = new ButtonBuilder()
+            .setCustomId("confirminviteButton")
+            .setLabel("✅ Confirm")
+            .setStyle("Success")
+
+            const row2 = new ActionRowBuilder().addComponents(confirminviteButton)
+
             const user = await interaction.client.users.fetch(discordID)
-            await userMember.roles.remove(guestRole)
-            await userMember.roles.add(memberRole)
-            await userMember.setNickname(ign)
             await user.send({content: `Congratulations ${discordTag} ! Your Club Application has been Approved! Follow the Steps Below to fully join THE NORTH!`, embeds: [dmEmbed], components: [row]})
 
             const channelId = interaction.channelId
@@ -288,7 +291,7 @@ module.exports = {
             const channel = interaction.client.channels.cache.get(channelId)
             const editMessage = await channel.messages.fetch(interaction.message.id)
 
-            editMessage.edit({ embeds: [embed], components: [] })
+            editMessage.edit({ embeds: [embed], components: [row2] })
 
             interaction.reply({content: "Approve Successful", ephemeral: true})
 
@@ -325,6 +328,104 @@ module.exports = {
             const inboxChannel = interaction.client.channels.cache.get(inboxChannelId)
             await inboxChannel.send(`<@${interaction.user.id}> is ready to be invited to THE NORTH`)
 
+        }
+
+        if (interaction.customId === "confirminviteButton") {
+
+            const guild = interaction.guild
+            const member = await guild.members.fetch(interaction.user.id)
+
+            if (!member.roles.cache.has(grandcounsilRole)) {
+                interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
+
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply()
+                    } catch (error) {
+                        console.error(error)
+                    }
+                }, 2000)
+
+                return;
+            }
+
+            const userMessage = await interaction.message.embeds
+            const embedMessage = userMessage[0]
+            const ign = embedMessage.fields[2].value
+            const discordTag = embedMessage.fields[0].value
+            const discordIdentity = embedMessage.fields[1].value
+            const discordID = discordTag.match(/\d+/)[0]
+            const clubanswerQn2 = embedMessage.fields[3].value
+            const clubanswerQn3 = embedMessage.fields[4].value
+            const clubanswerQn4 = embedMessage.fields[5].value
+            const approveBy = embedMessage.fields[6].value
+            const image = embedMessage.image.url
+            const thumbnail = embedMessage.thumbnail.url
+
+            const embed = new EmbedBuilder()
+            .setTitle("Applicant Successfully Invited to THE NORTH")
+            .setDescription("Applicant Information (Applicant Invited)")
+            .setColor(0x0000FF)
+            .setImage(image)
+            .setThumbnail(thumbnail)
+            .setFields(
+                {
+                    name: "Discord User",
+                    value: `${discordTag}`,
+                    inline: true,
+                },
+                {
+                    name: "Discord Tag",
+                    value: `${discordIdentity}`,
+                    inline: true,
+                },
+                {
+                    name: "Trove In game Name",
+                    value: `${ign}`,
+                },
+                {
+                    name: "What about Trove keeps you playing?",
+                    value: `${clubanswerQn2}`
+                },
+                {
+                    name: "What can you tell us about yourself?",
+                    value: `${clubanswerQn3}`
+                },
+                {
+                    name: "Why do you want to join The North?",
+                    value: `${clubanswerQn4}`
+                },
+                {
+                    name: "Image for proof of Total Mastery Level ",
+                    value: "If you do not see a image of proof, it means the Applicant either did not give a valid Image URL or left this part Blank"
+                },
+                {
+                    name: "Approved By",
+                    value: `${approveBy}`
+                }
+            )
+
+            const userMember = await guild.members.fetch(discordID)
+            await userMember.roles.remove(guestRole)
+            await userMember.roles.add(memberRole)
+            await userMember.setNickname(ign)
+
+            const channelId = interaction.channelId
+
+            const channel = interaction.client.channels.cache.get(channelId)
+            const editMessage = await channel.messages.fetch(interaction.message.id)
+            
+            editMessage.edit({ embeds: [embed], components: [] })
+
+            interaction.reply({content: "Confirm Successful", ephemeral: true})
+
+            setTimeout(async () => {
+                try {
+                    await interaction.deleteReply()
+                } catch (error) {
+                    console.error(error)
+                    }
+            }, 10000)
         }
 
         // Application Reject Process Modal (Part 1)
@@ -365,6 +466,7 @@ module.exports = {
             await interaction.showModal(modal)
         }
 
+        // Modal for Deny Reason for Staff
         if (interaction.customId === "clubdenyReason") {
 
             const userMessage = await interaction.message.embeds
