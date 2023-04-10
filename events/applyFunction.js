@@ -2,7 +2,8 @@ const { Events, EmbedBuilder, ButtonBuilder, ModalBuilder, ActionRowBuilder, Tex
 const memberRole = "288385193285386248"
 const guestRole = "615837413117526027"
 const grandcounsilRole = "288382736480337920"
-const inboxChannelId = "1094636463011930215"
+const testinboxChannelId = "1094636463011930215"
+const inboxChannelId = "1095111479449092276"
 
 function isImage(url) {
     return /^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg|JPG|JPEG|PNG|WEBP|AVIF|GIF|SVG)$/.test(url);
@@ -93,7 +94,7 @@ module.exports = {
             const clubanswerQn4 = interaction.fields.getTextInputValue("clubapplyQn4")
 
             // Retrieving the Inbox Channel
-            const inboxChannel = interaction.client.channels.cache.get("1094636463011930215")
+            const inboxChannel = interaction.client.channels.cache.get(inboxChannelId)
 
             // Determining if the URL in clubapplyQn5 is an Image URL
             let image = await interaction.fields.getTextInputValue("clubapplyQn5")
