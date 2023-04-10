@@ -1,7 +1,20 @@
 require("dotenv/config");
 const { REST, Routes, ApplicationCommandOptionType } = require("discord.js");
 
-const commands = []
+const commands = [
+    {
+        name: "unverify",
+        description: "Unverify a discord user",
+        options: [
+            {
+                name: "discord-user",
+                description: "Discord User",
+                type: ApplicationCommandOptionType.User,
+                required: true,
+            }
+        ]
+    }
+]
 
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
