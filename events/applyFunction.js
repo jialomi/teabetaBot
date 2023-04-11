@@ -22,7 +22,7 @@ module.exports = {
             const member = await guild.members.fetch(interaction.user.id)
 
             if (member.roles.cache.has(memberRole)) {
-                interaction.reply("You are already a NORTHMEN")
+                interaction.reply({ content: "You are already a NORTHMEN", ephemeral: true})
 
                 setTimeout(async () => {
                     try {
