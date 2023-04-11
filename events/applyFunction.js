@@ -1,10 +1,13 @@
 const { Events, EmbedBuilder, ButtonBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle} = require("discord.js")
+const guildId = "288378882418016256"
 const memberRole = "288385193285386248"
 const guestRole = "615837413117526027"
 const grandcounsilRole = "288382736480337920"
 const kingsguardRole = "438818482692423683"
 const knightRole = "455248257161887754"
+const staffRole = "623160704492634112"
 const testinboxChannelId = "1094636463011930215"
+const backupinboxChannelId = "1095111479449092276"
 const inboxChannelId = "1095111479449092276"
 
 function isImage(url) {
@@ -303,7 +306,7 @@ module.exports = {
                 } catch (error) {
                     console.error(error)
                     }
-            }, 10000)
+            }, 1000 * 60 * 5)
         }
 
         if (interaction.customId === "requestinviteButton") {
@@ -329,6 +332,20 @@ module.exports = {
 
             const inboxChannel = interaction.client.channels.cache.get(inboxChannelId)
             await inboxChannel.send(`<@${interaction.user.id}> is ready to be invited to THE NORTH`)
+
+            setTimeout(async () => {
+                try {
+                    const guild = await interaction.client.guilds.fetch(guildId)
+                    const member = await guild.members.fetch(interaction.user.id)
+                    if (!member.roles.cache.has(memberRole)) {
+                        const inboxChannel = interaction.client.channels.cache.get(inboxChannelId)
+
+                        await inboxChannel.send(`<@&${staffRole}>, <@${interaction.user.id}> is ready to be invited to THE NORTH`)
+                    }
+                } catch (error) {
+                    console.error(error)
+                }
+            }, 10000)
 
         }
 
