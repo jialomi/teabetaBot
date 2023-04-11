@@ -2,6 +2,8 @@ const { Events, EmbedBuilder, ButtonBuilder, ModalBuilder, ActionRowBuilder, Tex
 const memberRole = "288385193285386248"
 const guestRole = "615837413117526027"
 const grandcounsilRole = "288382736480337920"
+const kingsguardRole = "438818482692423683"
+const knightRole = "455248257161887754"
 const testinboxChannelId = "1094636463011930215"
 const inboxChannelId = "1095111479449092276"
 
@@ -335,7 +337,7 @@ module.exports = {
             const guild = interaction.guild
             const member = await guild.members.fetch(interaction.user.id)
 
-            if (!member.roles.cache.has(grandcounsilRole)) {
+            if (!member.roles.cache.has(grandcounsilRole) || !member.roles.cache.has(kingsguardRole) || !member.roles.cache.has(knightRole)) {
                 interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
 
                 setTimeout(async () => {
