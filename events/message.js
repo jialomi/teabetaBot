@@ -50,7 +50,7 @@ module.exports = {
             message.channel.send(`${maester} <@&288382741450588160> **(President)**\n<@263370989906165771>\n\n${maester} <@&716773257683927101> **(VP)**\n<@155015894324477952>\n\n${maester} <@&288382736480337920> **(Officer)**\n<@209712946534809600>, <@248467181963051009>, <@142731840510361600>, <@261620906986700801>, <@427282451291701249>, <@160228491206459393>, <@322125001308241920>, <@200690670506082304>\n\n${maester} <@&438818482692423683> **(Enforcer)**\n<@172522468764811274>, <@324630269393108994>, <@254131637648883712>, <@246658601794404352>, <@198104477998383104>, <@201351535614099456>, <@708450015458230352>, <@488720556158484492>, <@199934359808114688>, <@112010273518342144>\n\n${maester} <@&455248257161887754> **(Captain)**\n<@153052293627904000>, <@257597156481957888>, <@279681055764774913>, <@297445641876013056>, <@186104843478368256>, <@125844744399093761>, <@402191805862379525>, <@573760981625208863>, <@307117396563329024>, <@265559356441886720>, <@264783209198387202>, <@299305860763484172>, <@904239802549927987>`)
         }
 
-        if (message.content === "message" && message.author.id === "998246368512585800") {
+        /*if (message.content === "message" && message.author.id === "998246368512585800") {
             const Weirwood = await message.guild.emojis.cache.find(emoji => emoji.name === 'Weirwood');
             const maester = await message.guild.emojis.cache.find(emoji => emoji.name === 'maester')
 
@@ -75,7 +75,7 @@ module.exports = {
                 },
                 {
                     name: "Step 3️⃣",
-                    value: "Under the Image URL for proof question, in order to get the URL, send your screenshot to any chat, then right click on the image and select **Copy Link**, then paste the link into the Image URL question of the form\n"
+                    value: "Under the Image URL for proof question, in order to get the URL, send your screenshot to <#313319114783326210> , then right click on the image and select Copy Link, then paste the link into the Image URL question of the form\n"
                 },
                 {
                     name: "Step 4️⃣",
@@ -99,7 +99,7 @@ module.exports = {
                 },
                 {
                     name: "For Rejected Applicants",
-                    value: "Do note that if you have been rejected, the reason will be stated in your application in <#575228603583692814>"
+                    value: "Do note that if you have been rejected, the reason will be stated in a DM sent to you" 
                 }
             )
 
@@ -138,5 +138,112 @@ module.exports = {
 
             message.channel.send({ content: `${maester} <@&288382741450588160> **(President)**\n<@263370989906165771>\n\n${maester} <@&716773257683927101> **(VP)**\n<@155015894324477952>\n\n${maester} <@&288382736480337920> **(Officer)**\n<@209712946534809600>, <@248467181963051009>, <@142731840510361600>, <@261620906986700801>, <@427282451291701249>, <@160228491206459393>, <@322125001308241920>, <@200690670506082304>\n\n${maester} <@&438818482692423683> **(Enforcer)**\n<@172522468764811274>, <@324630269393108994>, <@254131637648883712>, <@246658601794404352>, <@198104477998383104>, <@201351535614099456>, <@708450015458230352>, <@488720556158484492>, <@199934359808114688>, <@112010273518342144>\n\n${maester} <@&455248257161887754> **(Captain)**\n<@153052293627904000>, <@257597156481957888>, <@279681055764774913>, <@297445641876013056>, <@186104843478368256>, <@125844744399093761>, <@402191805862379525>, <@573760981625208863>, <@307117396563329024>, <@265559356441886720>, <@264783209198387202>, <@299305860763484172>, <@904239802549927987>\n\n For more info on roles, Click the **Role Guide** button below`, components: [row3]})
         }
+
+        if (message.content === "nosleep" && message.author.id === "998246368512585800") {
+
+            const embed = new EmbedBuilder()
+            .setTitle("Club Application Guide")
+            .setDescription("Follow these steps to apply to be a member of The North")
+            .setThumbnail("https://cdn.discordapp.com/icons/288378882418016256/a_4ea65f4ffe0c1f0901d00de60f117abc.webp?size=96")
+            .setFields(
+                {
+                    name: "Step 1️⃣",
+                    value: "Navigate to the **📋 Apply** button below and click on it\n",
+                },
+                {
+                    name: "Step 2️⃣",
+                    value: "A form will pop up and you must fill in the answers to the best of your abilities\n",
+                },
+                {
+                    name: "Step 3️⃣",
+                    value: "Once all questions are answered, click submit and thats it your application is completed!\n"
+                },
+                {
+                    name: "Step 4️⃣",
+                    value: "Be patient and wait for your application to be approved by staff\n"
+                },
+                {
+                    name: "Step 5️⃣",
+                    value: "Once once you have been approved, a set of instructions will be sent to you in a DM on how to proceed"
+                },
+                {
+                    name: "Step 6️⃣",
+                    value: "Make sure your DMs are open to people in the same server to receive updates about your application!\n"
+                },
+                {
+                    name: "--------------------------",
+                    value: " "
+                },
+                {
+                    name: "How to get image URL",
+                    value: 'In order to get an image URL for your mastery proof, send a screenshot to i.e. <#313319114783326210> , right-click the image, select "Copy Link" and then paste the URL into the form. '
+                }
+            )
+
+            const applyclubButton = new ButtonBuilder()
+            .setCustomId("applyclubButton")
+            .setLabel("📋 Apply")
+            .setStyle("Primary")
+
+            const row = new ActionRowBuilder()
+            .addComponents(applyclubButton)
+
+            message.channel.send({ embeds : [embed], components: [row] })
+        }
+
+        if (message.content === "specialedit" && message.author.id === "998246368512585800") {
+
+            const discordChannel = await message.client.channels.cache.get("1094639960742707321")
+            const editMessage = await discordChannel.messages.fetch("1094703940345540639")
+
+            const embed = new EmbedBuilder()
+            .setTitle("Club Application Guide")
+            .setDescription("Follow these steps to apply to be a member of The North")
+            .setThumbnail("https://cdn.discordapp.com/icons/288378882418016256/a_4ea65f4ffe0c1f0901d00de60f117abc.webp?size=96")
+            .setFields(
+                {
+                    name: "Step 1️⃣",
+                    value: "Navigate to the **📋 Apply** button below and click on it\n",
+                },
+                {
+                    name: "Step 2️⃣",
+                    value: "A form will pop up and you must fill in the answers to the best of your abilities\n",
+                },
+                {
+                    name: "Step 3️⃣",
+                    value: "Once all questions are answered, click submit and thats it your application is completed!\n"
+                },
+                {
+                    name: "Step 4️⃣",
+                    value: "Be patient and wait for your application to be approved by staff\n"
+                },
+                {
+                    name: "Step 5️⃣",
+                    value: "Once once you have been approved, a set of instructions will be sent to you in a DM on how to proceed"
+                },
+                {
+                    name: "Step 6️⃣",
+                    value: "Make sure your DMs are open to people in the same server to receive updates about your application!\n"
+                },
+                {
+                    name: "--------------------------",
+                    value: " "
+                },
+                {
+                    name: "How to get image URL",
+                    value: 'In order to get an image URL for your mastery proof, send a screenshot to i.e. <#313319114783326210> , right-click the image, select "Copy Link" and then paste the URL into the form. '
+                }
+            )
+
+            const applyclubButton = new ButtonBuilder()
+            .setCustomId("applyclubButton")
+            .setLabel("📋 Apply")
+            .setStyle("Primary")
+
+            const row = new ActionRowBuilder()
+            .addComponents(applyclubButton)
+
+            editMessage.edit({ embeds : [embed], components: [row] })
+        }*/
     }
 }

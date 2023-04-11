@@ -470,7 +470,7 @@ module.exports = {
             await interaction.showModal(modal)
         }
 
-        // Modal for Deny Reason for Staff
+        // Embed for Deny Reason for Staff
         if (interaction.customId === "clubdenyReason") {
 
             const userMessage = await interaction.message.embeds
@@ -538,10 +538,24 @@ module.exports = {
                 },
             )
 
+            const embed2 = new EmbedBuilder()
+            .setTitle("Application to join THE NORTH Unsuccessful")
+            .setDescription(`${denyReasonFinal}`)
+            .setThumbnail(thumbnail)
+            .setAuthor(
+                {
+                    name: interaction.client.user.username,
+                    iconURL: interaction.client.user.displayAvatarURL()
+                }
+            )
+
             const channelId = interaction.channelId
+            const user = await interaction.client.users.fetch(discordID)
 
             const channel = interaction.client.channels.cache.get(channelId)
             const editMessage = await channel.messages.fetch(interaction.message.id)
+
+            user.send({ embeds: [embed2]})
 
             editMessage.edit({ content: denyReasonFinal, embeds: [embed], components: [] })
             
