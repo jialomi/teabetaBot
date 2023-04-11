@@ -337,7 +337,9 @@ module.exports = {
             const guild = interaction.guild
             const member = await guild.members.fetch(interaction.user.id)
 
-            if (!member.roles.cache.has(grandcounsilRole) || !member.roles.cache.has(kingsguardRole) || !member.roles.cache.has(knightRole)) {
+            console.log(!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(kingsguardRole) && !member.roles.cache.has(knightRole))
+
+            if (!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(kingsguardRole) && !member.roles.cache.has(knightRole)) {
                 interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
 
                 setTimeout(async () => {
