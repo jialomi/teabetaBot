@@ -30,7 +30,7 @@ module.exports = {
                     } catch (error) {
                         console.error(error)
                     }
-                }, 2000)
+                }, 1000 * 60 )
 
                 return;
             }
