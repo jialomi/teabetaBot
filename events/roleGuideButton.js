@@ -6,25 +6,7 @@ module.exports = {
         
         // More Roles Button Pressed
         if (interaction.customId === "morerolesButton") {
-
-            const guild = interaction.guild
-            const member = await guild.members.fetch(interaction.user.id)
-
-            if (!member.roles.cache.has(member)) {
-
-                interaction.reply("You are not a member of the server yet!")
-
-                setTimeout(async () => {
-                    try {
-                        await interaction.deleteReply()
-                    } catch (error) {
-                        console.error(error)
-                    }
-                }, 2000)
-
-                return;
-            }
-
+            
             const Weirwood = await interaction.guild.emojis.cache.find(emoji => emoji.name === "Weirwood")
             const movie_camera = "🎥"
             const rooGift = await interaction.guild.emojis.cache.find(emoji => emoji.name === 'rooGift')
