@@ -13,7 +13,44 @@ const commands = [
                 required: true,
             }
         ]
-    }
+    },
+
+    {
+      name: "editmessage",
+      description: "Message Editor",
+      options: [
+        {
+          name: "channel-id",
+          description: "Channel ID of the channel that has the message you want to edit",
+          type: ApplicationCommandOptionType.String,
+          required: true
+        },
+        {
+          name: "message-id",
+          description: "Message ID of the message you want to edit",
+          type: ApplicationCommandOptionType.String,
+          required: true
+        },
+        {
+          name: "content-message-id",
+          description: "The message you want to copy and use to edit the message being editted",
+          type: ApplicationCommandOptionType.String,
+          required: true
+        }
+      ]
+    },
+
+    {
+      name: "say",
+      description: "Makes Tea Beta send a message",
+      options: [
+        {
+          name: "content",
+          description: "Content of the message",
+          type: ApplicationCommandOptionType.String,
+        },
+      ]
+    },
 ]
 
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);

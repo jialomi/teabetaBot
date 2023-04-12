@@ -39,5 +39,37 @@ module.exports = {
                 }
             }, 2000)
         }
+
+        if (interaction.commandName === "editmessage") {
+
+            const interactor = await interaction.guild.members.fetch(interaction.user.id)
+
+            if (!interactor.roles.cache.has(grandcounsilRole)) {
+                interaction.reply({ content: "You are not authorised to perform this action", ephemeral: true})
+
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply()
+                    } catch (error) {
+                        console.error(error)
+                    }
+                },5000)
+            }
+
+            const contentChannel = await interaction.client.channels.cache.get(interaction.channelId)
+            const contentMessage = await contentChannel.messages.fetch(interaction.options.get("content-message-id").value)
+
+            const editChannel = await interaction.client.channels.cache.get(interaction.options.get("channel-id").value)
+            const editMessage = await editChannel.messages.fetch(interaction.options.get("message-id").value)
+
+            editMessage.edit({content: contentMessage.content})
+        }
+
+        if (interaction.commandName === "say") {
+
+            interaction.reply({content: `said ${interaction.options.get("content").value}`})
+            interaction.deleteReply()
+            interaction.channel.send(interaction.options.get("content").value)
+        }
     }
 }
