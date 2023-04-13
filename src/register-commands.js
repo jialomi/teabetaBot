@@ -53,8 +53,36 @@ const commands = [
     },
 
     {
-      name: "closeticket",
-      description: "Closes Application Ticket",
+      name: "ticket",
+      description: "Add / Remove somoneone from the channel",
+      options: [
+        {
+          name:"ticket-action",
+          description: "Choose Add or Remove",
+          type: ApplicationCommandOptionType.String,
+          required: true,
+          choices: [
+            {
+              name: "Add",
+              value: "Add"
+            },
+            {
+              name: "Remove",
+              value: "Remove"
+            },
+            {
+              name: "Close",
+              value: "Close"
+            },
+          ]
+        },
+        {
+          name: "user",
+          description: "Discord User you want to add / remove from the ticket",
+          type: ApplicationCommandOptionType.User,
+          required: false
+        }
+      ]
     }
 ]
 

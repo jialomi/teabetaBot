@@ -101,8 +101,7 @@ module.exports = {
             }
         }
 
-        if (interaction.commandName === "closeticket") {
-
+        if (interaction.commandName === "ticket") {
             try {
                 if (!interaction.channel.name.startsWith("ticket-knight")) {
                     interaction.reply({ content: "This is not a Ticket channel", ephemeral: true })
@@ -114,25 +113,42 @@ module.exports = {
                     return
                 }
 
-                await interaction.reply("```Saving Transcript.```")
-                await interaction.editReply("```Saving Transcript..```")
-                await interaction.editReply("```Saving Transcript...```")
+                const member = interaction.options.get("user")
 
-                const transcriptChannel = await interaction.client.channels.cache.get(interaction.channelId)
-                const sendToChannel = await interaction.client.channels.cache.get(sendToChannelId)
+                if (interaction.options.get("ticket-action").value === "Add") {
 
-                const messages = await transcriptChannel.messages.fetch()
-                const transcript = Array.from(messages.values()).reverse().map(m=> `${m.author.tag} (${m.createdAt.toUTCString()}): ${m.content}`).join('\n')
-                console.log(transcript)
-                const file = Buffer.from(transcript, 'utf-8')
-                await sendToChannel.send({ content: `Ticket ID: ${interaction.channelId}\nTicket Name: ${interaction.channel.name}\nClosed By: ${interaction.user.toString()}`, files: [{ attachment: file, name: `${interaction.channel.name}.txt`}] })
+                    interaction.channel.permissionOverwrites.edit(member.user.id, { ViewChannel: true, SendMessages: true })
+                    interaction.reply({content: `${member.user.toString()} has been added to the ticket`})
+                }
 
-                await interaction.editReply("```Closing Ticket.```")
-                await interaction.editReply("```Closing Ticket..```")
-                await interaction.editReply("```Closing Ticket...```")
+                if (interaction.options.get("ticket-action").value === "Remove") {
 
-                const channel = await interaction.guild.channels.fetch(interaction.channelId)
-                await channel.delete()
+                    interaction.channel.permissionOverwrites.edit(member.user.id, { ViewChannel: false, SendMessages: false })
+                    interaction.reply({content: `${member.user.toString()} has been removed from the ticket`})
+                }
+
+                if (interaction.options.get("ticket-action").value === "Close") {
+
+                    await interaction.reply("```Saving Transcript.```")
+                    await interaction.editReply("```Saving Transcript..```")
+                    await interaction.editReply("```Saving Transcript...```")
+
+                    const transcriptChannel = await interaction.client.channels.cache.get(interaction.channelId)
+                    const sendToChannel = await interaction.client.channels.cache.get(sendToChannelId)
+
+                    const messages = await transcriptChannel.messages.fetch()
+                    const transcript = Array.from(messages.values()).reverse().map(m=> `${m.author.tag} (${m.createdAt.toUTCString()}): ${m.content}`).join('\n')
+                    console.log(transcript)
+                    const file = Buffer.from(transcript, 'utf-8')
+                    await sendToChannel.send({ content: `Ticket ID: ${interaction.channelId}\nTicket Name: ${interaction.channel.name}\nClosed By: ${interaction.user.toString()}`, files: [{ attachment: file, name: `${interaction.channel.name}.txt`}] })
+
+                    await interaction.editReply("```Closing Ticket.```")
+                    await interaction.editReply("```Closing Ticket..```")
+                    await interaction.editReply("```Closing Ticket...```")
+
+                    const channel = await interaction.guild.channels.fetch(interaction.channelId)
+                    await channel.delete()
+                }
             } catch (error) {
                 console.error(error)
             }
