@@ -4,6 +4,7 @@ const memberRole = "288385193285386248"
 const guestRole = "615837413117526027"
 const grandcounsilRole = "288382736480337920"
 const sendToChannelId = "1095836703916314665"
+const devRole = "1095126923740463106"
 
 module.exports = {
     name: "interactionCreate",
@@ -67,9 +68,9 @@ module.exports = {
                 const contentChannel = await interaction.client.channels.cache.get(interaction.channelId)
                 const contentMessage = await contentChannel.messages.fetch(interaction.options.get("content-message-id").value)
 
-                let editChannel = await interaction.options.get("channel-id").value
+                let editChannel = await interaction.options.get("channel-id")
 
-                if (editChannel === "0") {
+                if (editChannel === null) {
                     editChannel = await interaction.client.channels.cache.get(interaction.channelId)
                 } else {
                     editChannel = await interaction.client.channels.cache.get(interaction.options.get("channel-id").value)
@@ -103,6 +104,21 @@ module.exports = {
 
         if (interaction.commandName === "ticket") {
             try {
+                const interactor = await interaction.guild.members.fetch(interaction.user.id)
+                if (!interactor.roles.cache.has(grandcounsilRole) && !interactor.roles.cache.has(devRole)) {
+                    interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
+
+                    setTimeout(async () => {
+                        try {
+                            await interaction.deleteReply()
+                        } catch (error) {
+                            console.error(error)
+                        }
+                    }, 2000)
+
+                    return;
+                }
+
                 if (!interaction.channel.name.startsWith("ticket-knight")) {
                     interaction.reply({ content: "This is not a Ticket channel", ephemeral: true })
 
@@ -128,6 +144,7 @@ module.exports = {
                 }
 
                 if (interaction.options.get("ticket-action").value === "Close") {
+
 
                     await interaction.reply("```Saving Transcript.```")
                     await interaction.editReply("```Saving Transcript..```")

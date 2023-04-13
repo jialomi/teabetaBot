@@ -2,12 +2,45 @@ const { Events, EmbedBuilder, ButtonBuilder, ModalBuilder, ActionRowBuilder, Tex
 const guildId = "288378882418016256"
 const memberRole = "288385193285386248"
 const grandcounsilRole = "288382736480337920"
+const inboxChannelId = "1095111479449092276"
+const devRole = "1095126923740463106"
 
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
 
         if (interaction.customId === "knightapplyButton") {
+
+            const modal = new ModalBuilder()
+            .setCustomId("confirmknightApp")
+            .setTitle("Are you sure you want to continue")
+            
+            const confirmknightQn = new TextInputBuilder()
+            .setCustomId("confirmknightQn")
+            .setLabel("Type YES to continue and NO to cancel")
+            .setStyle(TextInputStyle.Short)
+            .setRequired(true)
+
+            const firstActionRow = new ActionRowBuilder()
+            .addComponents(confirmknightQn)
+
+            modal.addComponents(firstActionRow)
+
+            await interaction.showModal(modal)
+        }
+
+        if (interaction.customId === "confirmknightApp") {
+
+            if (interaction.fields.getTextInputValue("confirmknightQn").toLowerCase() !== "yes") {
+                interaction.reply({ content: "Operation Cancelled", ephemeral: true })
+
+                setTimeout(async () => {
+                    await interaction.deleteReply()
+                },5000)
+
+                return
+            }
+
             const channelName = `ticket-knight-${interaction.user.username.toLowerCase().replace(/\s+/g, "-")}`
             const catergoryID = "1095833702426230804"
             const member = await interaction.guild.members.fetch(interaction.user.id)
@@ -55,8 +88,25 @@ module.exports = {
                             id: grandcounsilRole,
                             allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages]
                         },
+                        {
+                            id: devRole,
+                            allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages]
+                        }
                     ]
                 })
+
+                const embed = new EmbedBuilder()
+                .setAuthor({
+                    name: interaction.user.username,
+                    iconURL: interaction.user.displayAvatarURL()
+                })
+                .setDescription(`Knight Application made by: ${interaction.user.toString()}\n\nChannel: ${channel}`)
+                .setTimestamp()
+                .setThumbnail(interaction.user.displayAvatarURL())
+                .setColor(0x0000FF)
+
+                const inboxChannel = await interaction.client.channels.cache.get(inboxChannelId)
+                await inboxChannel.send({ embeds: [embed]})
 
                 await interaction.reply({ content: `Knight Application ticket ${channel} has been created`, ephemeral: true})
 

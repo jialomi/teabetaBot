@@ -20,8 +20,8 @@ const commands = [
       description: "Message Editor",
       options: [
         {
-          name: "channel-id",
-          description: "Channel ID of the channel that has the message you want to edit",
+          name: "content-message-id",
+          description: "The message you want to copy and use to edit the message being editted",
           type: ApplicationCommandOptionType.String,
           required: true
         },
@@ -32,11 +32,11 @@ const commands = [
           required: true
         },
         {
-          name: "content-message-id",
-          description: "The message you want to copy and use to edit the message being editted",
+          name: "channel-id",
+          description: "Channel ID of the channel that has the message you want to edit",
           type: ApplicationCommandOptionType.String,
-          required: true
-        }
+          required: false,
+        },
       ]
     },
 
