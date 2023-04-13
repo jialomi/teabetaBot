@@ -27,7 +27,7 @@ module.exports = {
             
             const confirmknightQn = new TextInputBuilder()
             .setCustomId("confirmknightQn")
-            .setLabel("Type YES to continue and NO to cancel")
+            .setLabel("Would you like to begin a staff interview")
             .setStyle(TextInputStyle.Short)
             .setRequired(true)
 
