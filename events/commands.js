@@ -1,6 +1,9 @@
+const { AttachmentBuilder } = require("discord.js")
+
 const memberRole = "288385193285386248"
 const guestRole = "615837413117526027"
 const grandcounsilRole = "288382736480337920"
+const sendToChannelId = "1095836703916314665"
 
 module.exports = {
     name: "interactionCreate",
@@ -93,6 +96,43 @@ module.exports = {
                 interaction.reply({content: `said ${interaction.options.get("content").value}`})
                 interaction.deleteReply()
                 interaction.channel.send(interaction.options.get("content").value)
+            } catch (error) {
+                console.error(error)
+            }
+        }
+
+        if (interaction.commandName === "closeticket") {
+
+            try {
+                if (!interaction.channel.name.startsWith("ticket-knight")) {
+                    interaction.reply({ content: "This is not a Ticket channel", ephemeral: true })
+
+                    setTimeout(async () => {
+                        await interaction.deleteReply()
+                    },5000)
+
+                    return
+                }
+
+                await interaction.reply("```Saving Transcript.```")
+                await interaction.editReply("```Saving Transcript..```")
+                await interaction.editReply("```Saving Transcript...```")
+
+                const transcriptChannel = await interaction.client.channels.cache.get(interaction.channelId)
+                const sendToChannel = await interaction.client.channels.cache.get(sendToChannelId)
+
+                const messages = await transcriptChannel.messages.fetch()
+                const transcript = Array.from(messages.values()).reverse().map(m=> `${m.author.tag} (${m.createdAt.toUTCString()}): ${m.content}`).join('\n')
+                console.log(transcript)
+                const file = Buffer.from(transcript, 'utf-8')
+                await sendToChannel.send({ content: `Ticket ID: ${interaction.channelId}\nTicket Name: ${interaction.channel.name}`, files: [{ attachment: file, name: `${interaction.channel.name}.txt`}] })
+
+                await interaction.editReply("```Closing Ticket.```")
+                await interaction.editReply("```Closing Ticket..```")
+                await interaction.editReply("```Closing Ticket...```")
+
+                const channel = await interaction.guild.channels.fetch(interaction.channelId)
+                await channel.delete()
             } catch (error) {
                 console.error(error)
             }

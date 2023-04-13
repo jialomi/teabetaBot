@@ -51,6 +51,11 @@ const commands = [
         },
       ]
     },
+
+    {
+      name: "closeticket",
+      description: "Closes Application Ticket",
+    }
 ]
 
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
