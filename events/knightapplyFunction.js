@@ -29,6 +29,7 @@ module.exports = {
             .setCustomId("confirmknightQn")
             .setLabel("Would you like to begin a staff interview")
             .setStyle(TextInputStyle.Short)
+            .setPlaceholder(" Yes or No")
             .setRequired(true)
 
             const firstActionRow = new ActionRowBuilder()
