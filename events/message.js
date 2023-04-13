@@ -249,8 +249,47 @@ module.exports = {
             const row = new ActionRowBuilder()
             .addComponents(applyclubButton)
 
-            editMessage.edit({ embeds : [embed], components: [row] })
+            editMessage.edit({content: "", embeds : [embed], components: [row] })
         }
         
+        if (message.content === "ruleEdit" && message.author.id === "998246368512585800") {
+
+            const Weirwood = await message.guild.emojis.cache.find(emoji => emoji.name === 'Weirwood');
+            const maester = await message.guild.emojis.cache.find(emoji => emoji.name === 'maester')
+
+            const discordChannel = await message.client.channels.cache.get("1094639960742707321")
+            const editMessage = await discordChannel.messages.fetch("1094703944388849754")
+
+            const teaButton = new ButtonBuilder()
+            .setCustomId("teaButton")
+            .setLabel("TEA")
+            .setStyle("Primary")
+
+            const reportButton = new ButtonBuilder()
+            .setCustomId("reportButton")
+            .setLabel("Report")
+            .setStyle("Danger")
+
+            const row2 = new ActionRowBuilder()
+            .addComponents(teaButton, reportButton)
+
+            const embed = new EmbedBuilder()
+            .setThumbnail("https://cdn.discordapp.com/icons/288378882418016256/a_4ea65f4ffe0c1f0901d00de60f117abc.webp?size=96")
+            .setFields(
+                {
+                    name: "TEA Button",
+                    value: "Find out more about Trove Ethics Alliance (TEA) "
+                },
+                {
+                    name: "Report Button",
+                    value: "Report a user for breaking rules"
+                }
+            )
+
+            editMessage.edit({ content: `${maester} These rules apply to both this Discord server and the club itself.\n\n> **Rule 1️⃣: Respect**\nBe respectful and keep drama out of club chat. No genuine racism or sexism. Do not post pornographic links. Apply common sense. Privately message an enforcer or officer if you need to report a member.\n\n> **Rule 2️⃣ : No Begging**\n Do not beg for free items or spam in chat.\n\n> **Rule 3️⃣ : No Vandalizing/Griefing**\nDo not vandalize anyone's structures in the club world.\n\n> **Rule 4️⃣ : No Lying**\nDo not attempt to lie for unearned benefits. Examples of this would be faking a clubit screenshot or faking a higher speed coeff than you have.\n\n> **Rule 5️⃣ : No Undermining Staff Members**\nDo not undermine staff. We communicate. Don't try to ask different staff for the same thing thinking you'll get a different answer. If you feel the need to report a club staff member, privately message <@263370989906165771>.\n\n> **Rule 6️⃣ : No Random invites**\nSpeaks for itself, its annoying...\n\n> **Rule 7️⃣ : No Spreading of Exploits**\nDo not use THE  NORTH's club chat or Discord to spread exploits or make trades against the ToS.\nTerms of service & such can be found here: https://www.trionworlds.com/en/legal/terms-of-use/\n\n> **Rule 8️⃣ : No Abuse of any kind**\nAbuse of others or Trove as a whole will not be tolerated as per Trove Ethics Alliance regulations: No scamming and no use of cheating programs.`, embeds: [embed], components: [row2]})
+
+
+        }
     }
+
 }

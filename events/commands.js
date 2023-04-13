@@ -119,7 +119,7 @@ module.exports = {
                     return;
                 }
 
-                if (!interaction.channel.name.startsWith("ticket-knight")) {
+                if (!interaction.channel.name.startsWith("ticket-knight") && !interaction.channel.name.startsWith("ticket-report")) {
                     interaction.reply({ content: "This is not a Ticket channel", ephemeral: true })
 
                     setTimeout(async () => {
