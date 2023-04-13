@@ -11,6 +11,16 @@ module.exports = {
 
         if (interaction.customId === "knightapplyButton") {
 
+            const member = await interaction.guild.members.fetch(interaction.user.id)
+            
+            if (!member.roles.cache.has(memberRole)) {
+                interaction.reply({ content: "You must be a NORTHMEN to apply to be a Knight!", ephemeral: true })
+
+                setTimeout(async () => {
+                    await interaction.deleteReply()
+                },5000)
+            }
+
             const modal = new ModalBuilder()
             .setCustomId("confirmknightApp")
             .setTitle("Are you sure you want to continue")

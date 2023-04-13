@@ -155,7 +155,6 @@ module.exports = {
 
                     const messages = await transcriptChannel.messages.fetch()
                     const transcript = Array.from(messages.values()).reverse().map(m=> `${m.author.tag} (${m.createdAt.toUTCString()}): ${m.content}`).join('\n')
-                    console.log(transcript)
                     const file = Buffer.from(transcript, 'utf-8')
                     await sendToChannel.send({ content: `Ticket ID: ${interaction.channelId}\nTicket Name: ${interaction.channel.name}\nClosed By: ${interaction.user.toString()}`, files: [{ attachment: file, name: `${interaction.channel.name}.txt`}] })
 
