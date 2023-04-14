@@ -138,7 +138,7 @@ module.exports = {
 
             message.channel.send({ content: `${maester} <@&288382741450588160> **(President)**\n<@263370989906165771>\n\n${maester} <@&716773257683927101> **(VP)**\n<@155015894324477952>\n\n${maester} <@&288382736480337920> **(Officer)**\n<@209712946534809600>, <@248467181963051009>, <@142731840510361600>, <@261620906986700801>, <@427282451291701249>, <@160228491206459393>, <@322125001308241920>, <@200690670506082304>\n\n${maester} <@&438818482692423683> **(Enforcer)**\n<@172522468764811274>, <@324630269393108994>, <@254131637648883712>, <@246658601794404352>, <@198104477998383104>, <@201351535614099456>, <@708450015458230352>, <@488720556158484492>, <@199934359808114688>, <@112010273518342144>\n\n${maester} <@&455248257161887754> **(Captain)**\n<@153052293627904000>, <@257597156481957888>, <@279681055764774913>, <@297445641876013056>, <@186104843478368256>, <@125844744399093761>, <@402191805862379525>, <@573760981625208863>, <@307117396563329024>, <@265559356441886720>, <@264783209198387202>, <@299305860763484172>, <@904239802549927987>\n\n For more info on roles, Click the **Role Guide** button below`, components: [row3]})
         }*/
-
+        /*
         if (message.content === "nosleep" && message.author.id === "998246368512585800") {
 
             const embed = new EmbedBuilder()
@@ -190,8 +190,9 @@ module.exports = {
 
             message.channel.send({ embeds : [embed], components: [row] })
         }
+        */
 
-        
+        /*
         if (message.content === "specialedit" && message.author.id === "998246368512585800") {
 
             const discordChannel = await message.client.channels.cache.get("1094639960742707321")
@@ -251,7 +252,9 @@ module.exports = {
 
             editMessage.edit({content: "", embeds : [embed], components: [row] })
         }
+        */
         
+        /*
         if (message.content === "ruleEdit" && message.author.id === "998246368512585800") {
 
             const Weirwood = await message.guild.emojis.cache.find(emoji => emoji.name === 'Weirwood');
@@ -290,6 +293,33 @@ module.exports = {
 
 
         }
+        */
+
+        /*
+        if (message.content === "embed" && message.author.id === "998246368512585800") {
+            const reportEmbed = new EmbedBuilder()
+                .setTitle("Report Guidelines")
+                .setDescription("__To help THE NORTH best, address this problem please provide the following information__")
+                .setColor(0xFF0000)
+                .setThumbnail("https://cdn.discordapp.com/icons/288378882418016256/a_4ea65f4ffe0c1f0901d00de60f117abc.webp?size=96")
+                .setFields(
+                    {
+                        name: "Offender",
+                        value: "The user’s Trove name or/& Discord ID"
+                    },
+                    {
+                        name: "Offence",
+                        value: "What rule(s) did the offender break & how did they do so?\nPlease include as many details as possible"
+                    },
+                    {
+                        name: "Details that would help (optional)",
+                        value: "- Screenshots\n- Video"
+                    }
+                )
+
+            message.channel.send({ embeds: [reportEmbed] })
+        }
+        */
     }
 
 }

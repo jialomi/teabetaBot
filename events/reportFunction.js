@@ -99,18 +99,22 @@ module.exports = {
 
                 const reportEmbed = new EmbedBuilder()
                 .setTitle("Report Guidelines")
-                .setDescription("Information needed")
+                .setDescription("__To help THE NORTH best, address this problem please provide the following information__")
                 .setColor(0xFF0000)
                 .setThumbnail("https://cdn.discordapp.com/icons/288378882418016256/a_4ea65f4ffe0c1f0901d00de60f117abc.webp?size=96")
                 .setFields(
                     {
                         name: "Offender",
-                        value: "The user/player you want to report"
+                        value: "The user’s Trove name or/& Discord ID"
                     },
                     {
                         name: "Offence",
-                        value: "What rule did the offender break, and explain how the offender broke the rule"
+                        value: "What rule(s) did the offender break & how did they do so?\nPlease include as many details as possible"
                     },
+                    {
+                        name: "Details that would help (optional)",
+                        value: "- Screenshots\n- Video"
+                    }
                 )
 
 
