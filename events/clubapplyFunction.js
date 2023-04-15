@@ -523,13 +523,13 @@ module.exports = {
             const thumbnail = embedMessage.thumbnail.url
 
             let denyReason = interaction.fields.getTextInputValue("clubdenyReason")
-            let denyTemplate = "\n```We thank you for your time & efforts put into the Aplication, however We regret to inform you that your Club Application to THE NORTH has been Denied```"
+            let denyTemplate = "\n```We thank you for your time & efforts put into the Application, however We regret to inform you that your Club Application to THE NORTH has been Denied```"
             let denyReasonFinal
 
             if (denyReason === "") {
-                denyReasonFinal = discordTag + "\n```We thank you for your time & efforts put into the Aplication, however We regret to inform you that your Club Application to THE NORTH has been Denied```"
+                denyReasonFinal = discordTag + "\n```We thank you for your time & efforts put into the Application, however we regret to inform you that your Club Application to THE NORTH has been Denied```"
             } else {
-                denyReasonFinal = discordTag + "\n```We thank you for your time & efforts put into the Aplication, however We regret to inform you that your Club Application to THE NORTH has been Denied due to:\n\n" + denyReason + "```"
+                denyReasonFinal = discordTag + "\n```We thank you for your time & efforts put into the Application, however we regret to inform you that your Club Application to THE NORTH has been Denied due to:\n\n" + denyReason + "```"
             }
 
             const embed = new EmbedBuilder()
