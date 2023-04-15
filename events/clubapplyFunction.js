@@ -6,6 +6,7 @@ const grandcounsilRole = "288382736480337920"
 const kingsguardRole = "438818482692423683"
 const knightRole = "455248257161887754"
 const staffRole = "623160704492634112"
+const devRole = "1095126923740463106"
 const testinboxChannelId = "1094636463011930215"
 const backupinboxChannelId = "1095111479449092276"
 const inboxChannelId = "1095111479449092276"
@@ -148,6 +149,10 @@ module.exports = {
                 {
                     name: "Image for proof of Total Mastery Level ",
                     value: "If you do not see a image of proof, it means the Applicant either did not give a valid Image URL or left this part Blank"
+                },
+                {
+                    name: "Raw Image URL",
+                    value: `${interaction.fields.getTextInputValue("clubapplyQn5")}`
                 }
             )
 
@@ -186,7 +191,7 @@ module.exports = {
             const guild = interaction.guild
             const member = await guild.members.fetch(interaction.user.id)
 
-            if (!member.roles.cache.has(grandcounsilRole)) {
+            if (!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(devRole)) {
                 interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
 
                 setTimeout(async () => {
@@ -209,6 +214,7 @@ module.exports = {
             const clubanswerQn2 = embedMessage.fields[3].value
             const clubanswerQn3 = embedMessage.fields[4].value
             const clubanswerQn4 = embedMessage.fields[5].value
+            const rawImage = embedMessage.fields[5].value
             const image = embedMessage.image.url
             const thumbnail = embedMessage.thumbnail.url
 
@@ -252,6 +258,10 @@ module.exports = {
                 {
                     name: "Approved By",
                     value: `<@${interaction.user.id}>`
+                },
+                {
+                    name: "Raw Image URL",
+                    value: `${rawImage}`
                 }
             )
             
@@ -354,9 +364,9 @@ module.exports = {
             const guild = interaction.guild
             const member = await guild.members.fetch(interaction.user.id)
 
-            console.log(!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(kingsguardRole) && !member.roles.cache.has(knightRole))
+            console.log(!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(kingsguardRole) && !member.roles.cache.has(knightRole) && !member.roles.cache.has(devRole))
 
-            if (!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(kingsguardRole) && !member.roles.cache.has(knightRole)) {
+            if (!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(kingsguardRole) && !member.roles.cache.has(knightRole) && !member.roles.cache.has(devRole)) {
                 interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
 
                 setTimeout(async () => {
@@ -380,6 +390,7 @@ module.exports = {
             const clubanswerQn3 = embedMessage.fields[4].value
             const clubanswerQn4 = embedMessage.fields[5].value
             const approveBy = embedMessage.fields[7].value
+            const rawImage = embedMessage.fields[8].value
             const image = embedMessage.image.url
             const thumbnail = embedMessage.thumbnail.url
 
@@ -423,6 +434,10 @@ module.exports = {
                 {
                     name: "Approved By",
                     value: `${approveBy}`
+                },
+                {
+                    name: "Raw Image URL",
+                    value: `${rawImage}`
                 }
             )
 
@@ -455,7 +470,7 @@ module.exports = {
             const guild = interaction.guild
             const member = await guild.members.fetch(interaction.user.id)
 
-            if (!member.roles.cache.has(grandcounsilRole)) {
+            if (!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(devRole)) {
                 interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
 
                 setTimeout(async () => {
@@ -499,6 +514,7 @@ module.exports = {
             const clubanswerQn2 = embedMessage.fields[3].value
             const clubanswerQn3 = embedMessage.fields[4].value
             const clubanswerQn4 = embedMessage.fields[5].value
+            const rawImage = embedMessage.fields[7].value
             const image = embedMessage.image.url
             const thumbnail = embedMessage.thumbnail.url
 
@@ -553,6 +569,10 @@ module.exports = {
                     name: "Denied By",
                     value: `<@${interaction.user.id}>`
                 },
+                {
+                    name: "Raw Image URL",
+                    value: `${rawImage}`
+                }
             )
 
             const embed2 = new EmbedBuilder()
