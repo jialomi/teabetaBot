@@ -98,6 +98,7 @@ module.exports = {
             const clubanswerQn2 = interaction.fields.getTextInputValue("clubapplyQn2")
             const clubanswerQn3 = interaction.fields.getTextInputValue("clubapplyQn3")
             const clubanswerQn4 = interaction.fields.getTextInputValue("clubapplyQn4")
+            let rawImage = await interaction.fields.getTextInputValue("clubapplyQn5")
 
             // Retrieving the Inbox Channel
             const inboxChannel = interaction.client.channels.cache.get(inboxChannelId)
@@ -105,6 +106,9 @@ module.exports = {
             // Determining if the URL in clubapplyQn5 is an Image URL
             let image = await interaction.fields.getTextInputValue("clubapplyQn5")
             console.log(isImage(image))
+            if (rawImage === "") {
+                rawImage = "Empty Input"
+            }
             if (image === "") {
                 image = "https://cdn.discordapp.com/attachments/756494646678519878/758105625594036295/image0_1.png"
             }
@@ -152,7 +156,7 @@ module.exports = {
                 },
                 {
                     name: "Raw Image URL",
-                    value: `${interaction.fields.getTextInputValue("clubapplyQn5")}`
+                    value: `${rawImage}`
                 }
             )
 
