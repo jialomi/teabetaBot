@@ -100,7 +100,8 @@ module.exports = {
                     }
                 )
 
-                channel.send({ content: `${interaction.user.toString()}`, embeds: [embed] })
+                await channel.send({ content: `${interaction.user.toString()}`, embeds: [embed] })
+                await channel.send("To appeal your ban, please answer the following questions as honestly and completely as possible:\n```1. Do you know why you have been banned?\n2. How do you feel about being banned?\n3. How have you changed since being banned?```")
 
                 await interaction.reply({ content: `Appeal Channel created ${channel}`, ephemeral: true })
 
