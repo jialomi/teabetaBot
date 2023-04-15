@@ -295,14 +295,14 @@ module.exports = {
         }
         */
         
-        /*
+        
         if (message.content === "ruleEdit" && message.author.id === "998246368512585800") {
 
             const Weirwood = await message.guild.emojis.cache.find(emoji => emoji.name === 'Weirwood');
             const maester = await message.guild.emojis.cache.find(emoji => emoji.name === 'maester')
 
             const discordChannel = await message.client.channels.cache.get("1094639960742707321")
-            const editMessage = await discordChannel.messages.fetch("1094703944388849754")
+            const editMessage = await discordChannel.messages.fetch("1096640632698703902")
 
             const teaButton = new ButtonBuilder()
             .setCustomId("teaButton")
@@ -314,8 +314,13 @@ module.exports = {
             .setLabel("Report")
             .setStyle("Danger")
 
+            const appealButton = new ButtonBuilder()
+            .setCustomId("appealButton")
+            .setLabel("Appeal")
+            .setStyle("Secondary")
+
             const row2 = new ActionRowBuilder()
-            .addComponents(teaButton, reportButton)
+            .addComponents(teaButton, reportButton, appealButton)
 
             const embed = new EmbedBuilder()
             .setThumbnail("https://cdn.discordapp.com/icons/288378882418016256/a_4ea65f4ffe0c1f0901d00de60f117abc.webp?size=96")
@@ -327,6 +332,10 @@ module.exports = {
                 {
                     name: "Report Button",
                     value: "Report a user for breaking rules"
+                },
+                {
+                    name: "Appeal",
+                    value: "Appeal your Ban"
                 }
             )
 
@@ -334,7 +343,7 @@ module.exports = {
 
 
         }
-        */
+        
 
         /*
         if (message.content === "embed" && message.author.id === "998246368512585800") {

@@ -1,10 +1,11 @@
-const { AttachmentBuilder } = require("discord.js")
+const { AttachmentBuilder, EmbedBuilder } = require("discord.js")
 
 const memberRole = "288385193285386248"
 const guestRole = "615837413117526027"
 const grandcounsilRole = "288382736480337920"
 const sendToChannelId = "1095836703916314665"
 const devRole = "1095126923740463106"
+const banChannelId = "1096859455842418788"
 
 module.exports = {
     name: "interactionCreate",
@@ -119,7 +120,7 @@ module.exports = {
                     return;
                 }
 
-                if (!interaction.channel.name.startsWith("ticket-knight") && !interaction.channel.name.startsWith("ticket-report")) {
+                if (!interaction.channel.name.startsWith("ticket-knight") && !interaction.channel.name.startsWith("ticket-report") && !interaction.channel.name.startsWith("ticket-appeal")) {
                     interaction.reply({ content: "This is not a Ticket channel", ephemeral: true })
 
                     setTimeout(async () => {
@@ -165,6 +166,82 @@ module.exports = {
                     const channel = await interaction.guild.channels.fetch(interaction.channelId)
                     await channel.delete()
                 }
+            } catch (error) {
+                console.error(error)
+            }
+        }
+
+        if (interaction.commandName === "ban") {
+
+            const interactor = await interaction.guild.members.fetch(interaction.user.id)
+            if (!interactor.roles.cache.has(grandcounsilRole) && !interactor.roles.cache.has(devRole)) {
+                interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
+
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply()
+                    } catch (error) {
+                        console.error(error)
+                    }
+                }, 2000)
+
+                return;
+            }
+
+            try {
+
+                const banUser = interaction.options.get("user")
+                const banReason = interaction.options.get("reason").value
+
+                const embed = new EmbedBuilder()
+                .setTitle(`Banned User ${banUser.user.username}`)
+                .setDescription("__Banned User's Info:__")
+                .setColor(0xFF0000)
+                .setTimestamp()
+                .setThumbnail(banUser.user.displayAvatarURL())
+                .setFields(
+                    {
+                        name: "Offender",
+                        value: `Discord User: ${banUser.user.toString()}\nDiscord Tag: ${banUser.user.tag}\nUser ID: ${banUser.user.id}`
+                    },
+                    {
+                        name: "Reason",
+                        value: `${banReason}`
+                    }
+                )
+
+                const channel = await interaction.guild.channels.fetch(banChannelId)
+                const message = await channel.send({ embeds: [embed] })
+
+                const dmEmbed = new EmbedBuilder()
+                .setTitle("Banned From THE NORTH")
+                .setColor(0x0000FF)
+                .setDescription(`You have been banned from THE NORTH for the following:\n${banReason}`)
+                .setFields(
+                    {
+                        name: "Appeal Option",
+                        value: "Feel free to Appeal your ban with your Ban ID given below."
+                    },
+                    {
+                        name: "Ban ID",
+                        value: `${message.id}`
+                    }
+                )
+
+                const user = await interaction.client.users.fetch(banUser.user.id)
+                await user.send({ embeds: [dmEmbed] })
+
+                interaction.reply({ content: `Banned user logged to ${channel}`, ephemeral: true })
+
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply()
+                    } catch (error) {
+                        console.error(error)
+                    }
+                }, 2000)
+
+                
             } catch (error) {
                 console.error(error)
             }

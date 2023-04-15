@@ -83,7 +83,26 @@ const commands = [
           required: false
         }
       ]
-    }
+    },
+
+  {
+    name: "ban",
+    description: "Ban a user",
+    options: [
+      {
+        name: "user",
+        description: "User you want to ban",
+        required: true,
+        type: ApplicationCommandOptionType.User
+      },
+      {
+        name: "reason",
+        description: "Ban reason",
+        required: true,
+        type: ApplicationCommandOptionType.String
+      }
+    ]
+  }
 ]
 
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
