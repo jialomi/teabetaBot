@@ -300,13 +300,15 @@ module.exports = {
 
             const Weirwood = await message.guild.emojis.cache.find(emoji => emoji.name === 'Weirwood');
             const maester = await message.guild.emojis.cache.find(emoji => emoji.name === 'maester')
+            const TEA = await message.guild.emojis.cache.find(emoji => emoji.name === 'Alliance')
 
             const discordChannel = await message.client.channels.cache.get("1094639960742707321")
             const editMessage = await discordChannel.messages.fetch("1096640632698703902")
 
             const teaButton = new ButtonBuilder()
             .setCustomId("teaButton")
-            .setLabel("TEA")
+            .setLabel(`TEA`)
+            .setEmoji(TEA.id)
             .setStyle("Primary")
 
             const reportButton = new ButtonBuilder()
@@ -326,7 +328,7 @@ module.exports = {
             .setThumbnail("https://cdn.discordapp.com/icons/288378882418016256/a_4ea65f4ffe0c1f0901d00de60f117abc.webp?size=96")
             .setFields(
                 {
-                    name: "TEA Button",
+                    name: `${TEA} TEA Button`,
                     value: "Find out more about Trove Ethics Alliance (TEA) "
                 },
                 {
