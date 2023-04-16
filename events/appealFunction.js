@@ -50,6 +50,19 @@ module.exports = {
                     return;
                 }
 
+                const message = banMessage.embeds
+                const embedMessage = message[0]
+                console.log(embedMessage.color.toString(16))
+                if (embedMessage.color.toString(16) === "ff00") {
+
+                    interaction.reply({ content: "Your appeal has been accepted already", ephemeral: true })
+
+                    setTimeout(async () => {
+                        interaction.deleteReply()
+                    },5000)
+                    return;
+                }
+
                 const channel = await interaction.guild.channels.create({
                     name: channelName,
                     type: 0,
@@ -78,11 +91,10 @@ module.exports = {
                     ]
                 })
 
-                const message = banMessage.embeds
-                const embedMessage = message[0]
+                const embedTitle = embedMessage.title
                 const offender = embedMessage.fields[0].value
                 const reason = embedMessage.fields[1].value
-                const thumbnail = embedMessage.thumbnail.grandcounsilRole
+                const thumbnail = embedMessage.thumbnail.url
 
                 const embed = new EmbedBuilder()
                 .setTitle(`Ban Appeal for ${interaction.user.username}`)
@@ -103,6 +115,24 @@ module.exports = {
                         value: `${reason}`
                     }
                 )
+
+                const editEmbed = new EmbedBuilder()
+                .setTitle("Ban Appeal ticket opened")
+                .setDescription("__Banned User's Info__")
+                .setThumbnail(thumbnail)
+                .setColor(0x0000FF)
+                .setFields(
+                    {
+                        name: "Offender",
+                        value: `${offender}`
+                    },
+                    {
+                        name: "Reason",
+                        value: `${reason}`
+                    }
+                )
+                
+                //await banMessage.edit({ embeds: [editEmbed] })
 
                 await channel.send({ content: `${interaction.user.toString()}`, embeds: [embed] })
                 await channel.send("To appeal your ban, please answer the following questions as honestly and completely as possible:\n```1. How do you feel about being banned?\n\n2. How have you changed since being banned?```")
