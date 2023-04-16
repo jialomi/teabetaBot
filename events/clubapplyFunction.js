@@ -218,7 +218,7 @@ module.exports = {
             const clubanswerQn2 = embedMessage.fields[3].value
             const clubanswerQn3 = embedMessage.fields[4].value
             const clubanswerQn4 = embedMessage.fields[5].value
-            const rawImage = embedMessage.fields[5].value
+            const rawImage = embedMessage.fields[7].value
             const image = embedMessage.image.url
             const thumbnail = embedMessage.thumbnail.url
 
