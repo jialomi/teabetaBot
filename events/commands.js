@@ -7,6 +7,7 @@ const sendToChannelId = "1095836703916314665"
 const devRole = "1095126923740463106"
 const banChannelId = "1096859455842418788"
 const banRoleId = "462611820126142464"
+const adminRoleId = "570764875350147092"
 
 module.exports = {
     name: "interactionCreate",
@@ -16,7 +17,7 @@ module.exports = {
             try {
                 const interactor = await interaction.guild.members.fetch(interaction.user.id)
 
-                if (!interactor.roles.cache.has(grandcounsilRole)) {
+                if (!interactor.roles.cache.has(grandcounsilRole) && !interactor.roles.cache.has(adminRoleId)) {
                     interaction.reply({ content: "You are not authorised to perform this action", ephemeral: true})
 
                     setTimeout(async () => {
@@ -54,7 +55,7 @@ module.exports = {
             try {
                 const interactor = await interaction.guild.members.fetch(interaction.user.id)
 
-                if (!interactor.roles.cache.has(grandcounsilRole)) {
+                if (!interactor.roles.cache.has(grandcounsilRole) && !interactor.roles.cache.has(adminRoleId) && !interactor.roles.cache.has(devRole)) {
                     interaction.reply({ content: "You are not authorised to perform this action", ephemeral: true})
 
                     setTimeout(async () => {
@@ -107,7 +108,7 @@ module.exports = {
         if (interaction.commandName === "ticket") {
             try {
                 const interactor = await interaction.guild.members.fetch(interaction.user.id)
-                if (!interactor.roles.cache.has(grandcounsilRole) && !interactor.roles.cache.has(devRole)) {
+                if (!interactor.roles.cache.has(grandcounsilRole) && !interactor.roles.cache.has(devRole) && !interactor.roles.cache.has(adminRoleId)) {
                     interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
 
                     setTimeout(async () => {
@@ -175,7 +176,7 @@ module.exports = {
         if (interaction.commandName === "ban") {
 
             const interactor = await interaction.guild.members.fetch(interaction.user.id)
-            if (!interactor.roles.cache.has(grandcounsilRole) && !interactor.roles.cache.has(devRole)) {
+            if (!interactor.roles.cache.has(grandcounsilRole) && !interactor.roles.cache.has(devRole) && !interactor.roles.cache.has(adminRoleId)) {
                 interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
 
                 setTimeout(async () => {
@@ -272,7 +273,7 @@ module.exports = {
         if (interaction.commandName === "unban") {
 
             const interactor = await interaction.guild.members.fetch(interaction.user.id)
-            if (!interactor.roles.cache.has(grandcounsilRole) && !interactor.roles.cache.has(devRole)) {
+            if (!interactor.roles.cache.has(grandcounsilRole) && !interactor.roles.cache.has(devRole) && !interactor.roles.cache.has(adminRoleId)) {
                 interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
 
                 setTimeout(async () => {

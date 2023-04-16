@@ -7,6 +7,7 @@ const kingsguardRole = "438818482692423683"
 const knightRole = "455248257161887754"
 const staffRole = "623160704492634112"
 const devRole = "1095126923740463106"
+const adminRoleId = "570764875350147092"
 const testinboxChannelId = "1094636463011930215"
 const backupinboxChannelId = "1095111479449092276"
 const inboxChannelId = "1095111479449092276"
@@ -195,7 +196,7 @@ module.exports = {
             const guild = interaction.guild
             const member = await guild.members.fetch(interaction.user.id)
 
-            if (!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(devRole)) {
+            if (!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(devRole) && !member.roles.cache.has(adminRoleId)) {
                 interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
 
                 setTimeout(async () => {
@@ -368,7 +369,7 @@ module.exports = {
             const guild = interaction.guild
             const member = await guild.members.fetch(interaction.user.id)
 
-            console.log(!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(kingsguardRole) && !member.roles.cache.has(knightRole) && !member.roles.cache.has(devRole))
+            console.log(!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(kingsguardRole) && !member.roles.cache.has(knightRole) && !member.roles.cache.has(devRole) && !member.roles.cache.has(adminRoleId))
 
             if (!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(kingsguardRole) && !member.roles.cache.has(knightRole) && !member.roles.cache.has(devRole)) {
                 interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
@@ -474,7 +475,7 @@ module.exports = {
             const guild = interaction.guild
             const member = await guild.members.fetch(interaction.user.id)
 
-            if (!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(devRole)) {
+            if (!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(devRole) && !member.roles.cache.has(adminRoleId)) {
                 interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
 
                 setTimeout(async () => {

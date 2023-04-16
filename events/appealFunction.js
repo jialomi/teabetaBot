@@ -4,6 +4,7 @@ const devRole = "1095126923740463106"
 const grandcounsilRole = "288382736480337920"
 const banChannelId = "1096859455842418788"
 const catergoryID = "1095833702426230804"
+const adminRoleId = "570764875350147092"
 
 module.exports = {
     name: Events.InteractionCreate,
