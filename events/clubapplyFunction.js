@@ -320,7 +320,7 @@ module.exports = {
                 } catch (error) {
                     console.error(error)
                     }
-            }, 1000 * 60 * 5)
+            }, 5000)
         }
 
         if (interaction.customId === "requestinviteButton") {
@@ -359,7 +359,7 @@ module.exports = {
                 } catch (error) {
                     console.error(error)
                 }
-            }, 10000)
+            }, 1000 * 60 * 5)
 
         }
 
