@@ -95,6 +95,10 @@ module.exports = {
                         value: `${offender}`
                     },
                     {
+                        name: "Ban ID",
+                        value: `${banID}`
+                    },
+                    {
                         name: "Reason",
                         value: `${reason}`
                     }

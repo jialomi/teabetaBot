@@ -6,6 +6,7 @@ const grandcounsilRole = "288382736480337920"
 const sendToChannelId = "1095836703916314665"
 const devRole = "1095126923740463106"
 const banChannelId = "1096859455842418788"
+const banRoleId = "462611820126142464"
 
 module.exports = {
     name: "interactionCreate",
@@ -210,6 +211,27 @@ module.exports = {
                     }
                 )
 
+                const userBan = await interaction.guild.members.fetch(banUser.user.id)
+
+                if (userBan.roles.cache.has(banRoleId)) {
+
+                    interaction.reply({ content: `${banUser.user.toString()} is already banned!`, ephemeral: true})
+
+                    setTimeout(async () => {
+                        try {
+                            await interaction.deleteReply()
+                        } catch (error) {
+                            console.error(error)
+                        }
+                    }, 2000)
+    
+                    return;
+
+                }
+
+                await userBan.roles.set([])
+                await userBan.roles.add(banRoleId)
+
                 const channel = await interaction.guild.channels.fetch(banChannelId)
                 const message = await channel.send({ embeds: [embed] })
 
@@ -244,6 +266,78 @@ module.exports = {
                 
             } catch (error) {
                 console.error(error)
+            }
+        }
+
+        if (interaction.commandName === "unban") {
+
+            const interactor = await interaction.guild.members.fetch(interaction.user.id)
+            if (!interactor.roles.cache.has(grandcounsilRole) && !interactor.roles.cache.has(devRole)) {
+                interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
+
+                setTimeout(async () => {
+                    try {
+                        await interaction.deleteReply()
+                    } catch (error) {
+                        console.error(error)
+                    }
+                }, 2000)
+
+                return;
+            }
+            
+            try {
+
+                const banID = interaction.options.get("ban-id").value
+                const member = interaction.options.get("user")
+                const unbanUser = await interaction.guild.members.fetch(member.user.id)
+
+                await unbanUser.roles.set([])
+                await unbanUser.roles.add(guestRole)
+
+                const channel = await interaction.client.channels.cache.get(banChannelId)
+                const editMessage = await channel.messages.fetch(banID)
+
+                const userMessage = await editMessage.embeds
+                const embedMessage = userMessage[0]
+                const offender = embedMessage.fields[0].value
+                const banReason = embedMessage.fields[1].value
+                const thumbnail = embedMessage.thumbnail.url
+
+                const embed = new EmbedBuilder()
+                .setTitle("Ban Appeal Accepted")
+                .setDescription("**Ban lifted**\n__Unbanned User's Info:__")
+                .setColor(0x00FF00)
+                .setThumbnail(thumbnail)
+                .setFields(
+                    {
+                        name: "Offender",
+                        value: `${offender}`
+                    },
+                    {
+                        name: "Reason",
+                        value: `${banReason}`
+                    }
+                )
+
+                editMessage.edit({ embeds: [embed] })
+
+                interaction.reply({ content: `${member.user.toString()} has been unbanned`, ephemeral: true})
+
+                setTimeout(async () => {
+                    await interaction.deleteReply()
+                },5000)
+                
+            } catch (error) {
+                console.error(error)
+
+                interaction.reply({ content: "Invalid Ban ID. Please make sure you key in the correct ID", ephemeral: true })
+
+                setTimeout(async () => {
+                    await interaction.deleteReply()
+                },5000)
+
+                return
             }
         }
     }

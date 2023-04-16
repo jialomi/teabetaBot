@@ -102,6 +102,25 @@ const commands = [
         type: ApplicationCommandOptionType.String
       }
     ]
+  },
+
+  {
+    name: "unban",
+    description: "Unban a user",
+    options: [
+      {
+        name: "user",
+        description: "User you want to unban",
+        required: true,
+        type: ApplicationCommandOptionType.User
+      },
+      {
+        name: "ban-id",
+        description: "Ban ID of the user",
+        required: true,
+        type: ApplicationCommandOptionType.String
+      }
+    ]
   }
 ]
 
