@@ -58,9 +58,137 @@ module.exports = {
 
             const giveawayEmbed = new EmbedBuilder()
             .setTitle(`${giveawayPrize}`)
-            
+            .setDescription(`${giveawayDesc}`)
+            .setTimestamp()
+            .setFields(
+                {
+                    name: "Giveaway ID",
+                    value: `${dbmessage.id}`
+                },
+                {
+                    name: "Duration",
+                    value: `${giveawayDuration} minutes`,
+                },
+                {
+                    name: "Hosted By",
+                    value: `<@${interaction.user.id}>`
+                },
+                {
+                    name: "Entries",
+                    value: ` `
+                },
+            )
+
+            const entryButton = new ButtonBuilder()
+            .setCustomId("entryButton")
+            .setLabel("Entry")
+            .setStyle("Success")
+
+            const row = new ActionRowBuilder()
+            .setComponents(entryButton)
+
+            const gamessage = await interaction.channel.send({ embeds: [giveawayEmbed], components: [row] })
 
             await interaction.reply({ content: "Giveaway Started", ephemeral: true })
+
+            setTimeout(async () => {
+                interaction.deleteReply()
+            },5000)
+        }
+
+        if (interaction.customId === "entryButton") {
+
+            const gaEmbed = await interaction.message.embeds
+            const embedMessage = gaEmbed[0]
+            const gaPrize = embedMessage.title
+            const gaDescription = embedMessage.description
+            const gaID = embedMessage.fields[0].value
+            const gaDuration = embedMessage.fields[1].value
+            const gaHost = embedMessage.fields[2].value
+
+            const dbchannel = await interaction.client.channels.cache.get(giveawayDatabaseChannelID)
+            const dbmessage = await dbchannel.messages.fetch(gaID)
+
+            const dbEmbed = dbmessage.embeds
+            const dbEmbedMessage = dbEmbed[0]
+            const dbDuration = dbEmbedMessage.fields[0].value
+            const dbNumberOfWinners = dbEmbedMessage.fields[1].value
+            const dbPrize = dbEmbedMessage.fields[2].value
+            const dbDescription = dbEmbedMessage.fields[3].value
+            let dbParticipants = dbEmbedMessage.fields[4].value
+
+            if (dbParticipants.split("\n").includes(interaction.user.id)) {
+                interaction.reply({ content: "You are already inside the Giveaway", ephemeral: true })
+
+                setTimeout(async () => {
+                    interaction.deleteReply()
+                },5000)
+
+                return
+            }
+
+            if (dbParticipants === "") {
+                dbParticipants = `${interaction.user.id}`
+            } else {
+                dbParticipants = dbParticipants + `\n${interaction.user.id}`
+            }
+            
+
+            const embed = new EmbedBuilder()
+            .setTitle("Giveaway Database Created")
+            .setFields(
+                {
+                    name: "Duration",
+                    value: `${dbDuration}`
+                },
+                {
+                    name: "Number Of Winners",
+                    value: `${dbNumberOfWinners}`
+                },
+                {
+                    name: "Prize",
+                    value: `${dbPrize}`
+                },
+                {
+                    name: "Description",
+                    value: `${dbDescription}`
+                },
+                {
+                    name: "Participants",
+                    value: `${dbParticipants}`
+                }
+            )
+            dbmessage.edit({ embeds: [embed] })
+
+            dbParticipants = dbParticipants.split("\n")
+            
+            const gamessage = await interaction.channel.messages.fetch(interaction.message.id)
+
+            const gaEmbeds = new EmbedBuilder()
+            .setTitle(`${gaPrize}`)
+            .setDescription(`${gaDescription}`)
+            .setFields(
+                {
+                    name: "Giveaway ID",
+                    value: `${gaID}`
+                },
+                {
+                    name: "Duration",
+                    value: `${gaDuration}`
+                },
+                {
+                    name: "Hosted By",
+                    value: `${gaHost}`
+                },
+                {
+                    name: "Entries",
+                    value: `${dbParticipants.length}`
+                }
+            )
+
+            gamessage.edit({ embeds: [gaEmbeds]})
+
+            interaction.reply({content: "You have successfully entered the Giveaway", ephemeral: true})
 
             setTimeout(async () => {
                 interaction.deleteReply()
