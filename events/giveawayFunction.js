@@ -81,7 +81,7 @@ module.exports = {
 
             const entryButton = new ButtonBuilder()
             .setCustomId("entryButton")
-            .setLabel("Entry")
+            .setLabel("Enter")
             .setStyle("Success")
 
             const row = new ActionRowBuilder()
