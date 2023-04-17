@@ -121,7 +121,12 @@ const commands = [
         type: ApplicationCommandOptionType.String
       }
     ]
-  }
+  },
+
+  {
+    name: "gcreate",
+    description: "create a Giveaway",
+  },
 ]
 
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);

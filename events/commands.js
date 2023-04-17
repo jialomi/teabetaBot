@@ -341,5 +341,18 @@ module.exports = {
                 return
             }
         }
+
+        if (interaction.commandName === "gcreate") {
+
+            const guildID = "1097357158452047952"
+            const guild = await interaction.client.guilds.cache.get(guildID)
+
+            if (!guild) {
+                console.log(`Guild with ID ${guildID} not found`)
+                return
+            }
+
+            console.log(guild.name)
+        }
     }
 }
