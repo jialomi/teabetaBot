@@ -1,4 +1,4 @@
-const { AttachmentBuilder, EmbedBuilder } = require("discord.js")
+const { AttachmentBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require("discord.js")
 
 const memberRole = "288385193285386248"
 const guestRole = "615837413117526027"
@@ -344,15 +344,49 @@ module.exports = {
 
         if (interaction.commandName === "gcreate") {
 
-            const guildID = "1097357158452047952"
-            const guild = await interaction.client.guilds.cache.get(guildID)
+            const modal = new ModalBuilder()
+            .setCustomId('giveawayModal')
+            .setTitle('Create a Giveaway')
 
-            if (!guild) {
-                console.log(`Guild with ID ${guildID} not found`)
-                return
-            }
+            const giveawayDuration = new TextInputBuilder()
+            .setCustomId("giveawayDuration")
+            .setLabel('DURATION in minutes')
+            .setPlaceholder("E.g. 10")
+            .setStyle(TextInputStyle.Short)
+            .setRequired(true)
 
-            console.log(guild.name)
+            const giveawayNumberOfWinners = new TextInputBuilder()
+            .setCustomId("giveawayNumberOfWinners")
+            .setLabel("Number of Winners")
+            .setStyle(TextInputStyle.Short)
+            .setRequired(true)
+            .setMinLength(1)
+            .setMaxLength(2)
+
+            const giveawayPrize = new TextInputBuilder()
+            .setCustomId("giveawayPrize")
+            .setLabel("PRIZE")
+            .setStyle(TextInputStyle.Short)
+            .setRequired(true)
+
+            const giveawayDesc = new TextInputBuilder()
+            .setCustomId("giveawayDesc")
+            .setLabel("Description")
+            .setStyle(TextInputStyle.Paragraph)
+            .setRequired(false)
+
+            const firstActionRow = new ActionRowBuilder()
+            .addComponents(giveawayDuration)
+            const secondActionRow = new ActionRowBuilder()
+            .addComponents(giveawayNumberOfWinners)
+            const thirdActionRow = new ActionRowBuilder()
+            .addComponents(giveawayPrize)
+            const fourthActionRow = new ActionRowBuilder()
+            .addComponents(giveawayDesc)
+
+            modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow)
+
+            await interaction.showModal(modal)
         }
     }
 }
