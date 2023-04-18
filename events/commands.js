@@ -375,6 +375,12 @@ module.exports = {
             .setStyle(TextInputStyle.Paragraph)
             .setRequired(false)
 
+            const giveawayChannels = new TextInputBuilder()
+            .setCustomId("giveawayChannels")
+            .setLabel("Giveaway Channel IDs")
+            .setStyle(TextInputStyle.Paragraph)
+            .setRequired(true)
+
             const firstActionRow = new ActionRowBuilder()
             .addComponents(giveawayDuration)
             const secondActionRow = new ActionRowBuilder()
@@ -383,6 +389,8 @@ module.exports = {
             .addComponents(giveawayPrize)
             const fourthActionRow = new ActionRowBuilder()
             .addComponents(giveawayDesc)
+            const fifthActionRow = new ActionRowBuilder()
+            .addComponents(giveawayChannels)
 
             modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow)
 

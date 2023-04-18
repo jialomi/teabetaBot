@@ -39,6 +39,7 @@ module.exports = {
             const giveawayNumberOfWinners = parseInt(interaction.fields.getTextInputValue("giveawayNumberOfWinners"))
             const giveawayPrize = interaction.fields.getTextInputValue("giveawayPrize")
             const giveawayDesc = interaction.fields.getTextInputValue("giveawayDesc")
+            // const giveawayChannels = interaction.fields.getTextInputValue("giveawayChannels").split(",")
 
             const dbEmbed = new EmbedBuilder()
             .setTitle("Giveaway Database Created")
@@ -151,9 +152,11 @@ module.exports = {
                     const winners = []
                     while (winners.length < giveawayNumberOfWinners) {
                         const winnerNumber = random(0, gaEntriesCount-1)
-                        const winner = await interaction.client.users.fetch(gaEntriesSplit[winnerNumber])
-                        if (!winners.includes(winner.username)) {
-                            winners.push(winner.username)
+                        const gaEntriesDSplit = gaEntriesSplit[winnerNumber].split(",")
+                        const winner = await interaction.client.users.fetch(gaEntriesDSplit[0])
+                        if (!winners.includes(winner.tag)) {
+                            const text = `${winner.tag} from ${gaEntriesDSplit[1]}`
+                            winners.push(text)
                         }
                     }
                     giveawayEmbed.setTitle(`${giveawayPrize}`)
@@ -223,9 +226,9 @@ module.exports = {
             }
 
             if (dbParticipants === "") {
-                dbParticipants = `${interaction.user.id}`
+                dbParticipants = `${interaction.user.id},${interaction.guild.name}`
             } else {
-                dbParticipants = dbParticipants + `\n${interaction.user.id}`
+                dbParticipants = dbParticipants + `\n${interaction.user.id},${interaction.guild.name}`
             }
             
 
