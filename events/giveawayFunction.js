@@ -22,7 +22,7 @@ function formatTime(seconds) {
     return `${hours > 0 ? hours + 'h ' : ''}${minutes > 0 ? minutes + 'm ' : ''}${secondsLeft}s`
 }
 
-function random (min, max) {
+function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
@@ -36,7 +36,7 @@ module.exports = {
             const dbchannel = await interaction.client.channels.cache.get(giveawayDatabaseChannelID)
 
             const giveawayDuration = interaction.fields.getTextInputValue("giveawayDuration")
-            const giveawayNumberOfWinners = interaction.fields.getTextInputValue("giveawayNumberOfWinners")
+            const giveawayNumberOfWinners = parseInt(interaction.fields.getTextInputValue("giveawayNumberOfWinners"))
             const giveawayPrize = interaction.fields.getTextInputValue("giveawayPrize")
             const giveawayDesc = interaction.fields.getTextInputValue("giveawayDesc")
 
@@ -81,7 +81,7 @@ module.exports = {
                 },
                 {
                     name: "Ends in",
-                    value: `${giveawayDuration}`,
+                    value: `${timeInSeconds}`,
                 },
                 {
                     name: "Hosted By",
@@ -147,8 +147,15 @@ module.exports = {
                 )
                 gamessage.edit({ embeds: [giveawayEmbed], components: [row] })
                 if (secondsLeft <= 0) {
-                    const winnerNumber = random(0, gaEntriesCount-1)
-                    const winner = await interaction.client.users.fetch(gaEntriesSplit[winnerNumber])
+
+                    const winners = []
+                    while (winners.length < giveawayNumberOfWinners) {
+                        const winnerNumber = random(0, gaEntriesCount-1)
+                        const winner = await interaction.client.users.fetch(gaEntriesSplit[winnerNumber])
+                        if (!winners.includes(winner.username)) {
+                            winners.push(winner.username)
+                        }
+                    }
                     giveawayEmbed.setTitle(`${giveawayPrize}`)
                     .setDescription(`${giveawayDesc}`)
                     .setTimestamp()
@@ -167,7 +174,7 @@ module.exports = {
                         },
                         {
                             name: "Winner(s)",
-                            value: `${winner.username}`
+                            value: `${winners.join("\n")}`
                         },
                         {
                             name: "Entries",
