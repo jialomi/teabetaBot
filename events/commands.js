@@ -350,8 +350,8 @@ module.exports = {
 
             const giveawayDuration = new TextInputBuilder()
             .setCustomId("giveawayDuration")
-            .setLabel('DURATION in minutes')
-            .setPlaceholder("E.g. 10")
+            .setLabel('DURATION')
+            .setPlaceholder("E.g. 10 m - minutes / 10 h - hours")
             .setStyle(TextInputStyle.Short)
             .setRequired(true)
 

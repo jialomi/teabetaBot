@@ -15,6 +15,13 @@ const inboxChannelId = "1095111479449092276"
 const giveawayDatabaseID = "1097357158452047952"
 const giveawayDatabaseChannelID = "1097358125008429147"
 
+function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds - hours * 3600) / 60)
+    const secondsLeft = seconds % 60
+    return `${hours > 0 ? hours + 'h ' : ''}${minutes > 0 ? minutes + 'm ' : ''}${secondsLeft}s`
+}
+
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
@@ -56,6 +63,9 @@ module.exports = {
 
             const dbmessage = await dbchannel.send({ embeds: [dbEmbed] })
 
+            const duration = giveawayDuration.split(' ')
+            const timeInSeconds = parseInt(duration[0]) * (duration[1] === 'h' ? 3600 : 60)
+
             const giveawayEmbed = new EmbedBuilder()
             .setTitle(`${giveawayPrize}`)
             .setDescription(`${giveawayDesc}`)
@@ -66,8 +76,8 @@ module.exports = {
                     value: `${dbmessage.id}`
                 },
                 {
-                    name: "Duration",
-                    value: `${giveawayDuration} minutes`,
+                    name: "Ends in",
+                    value: `${giveawayDuration}`,
                 },
                 {
                     name: "Hosted By",
@@ -90,6 +100,50 @@ module.exports = {
             const gamessage = await interaction.channel.send({ embeds: [giveawayEmbed], components: [row] })
 
             await interaction.reply({ content: "Giveaway Started", ephemeral: true })
+
+            let secondsLeft = timeInSeconds
+
+            const countdownInterval = setInterval(async () => {
+                secondsLeft--
+                const timeLeft = secondsLeft > 0 ? formatTime(secondsLeft) : 'Ended'
+                const gachannel = await interaction.client.channels.cache.get(giveawayDatabaseChannelID)
+                const gamessages = await gachannel.messages.fetch(dbmessage.id)
+                const gaEmbed = gamessages.embeds
+                const embedMessage = gaEmbed[0]
+                let gaEntries = embedMessage.fields[4].value
+                let gaEntriesSplit = gaEntries.split("\n")
+                let gaEntriesCount = 0;
+
+                if (gaEntries === '') {
+                    gaEntriesCount = 0
+                } else {
+                    gaEntriesCount = gaEntriesSplit.length
+                }
+
+                giveawayEmbed.setTitle(`${giveawayPrize}`)
+                .setDescription(`${giveawayDesc}`)
+                .setTimestamp()
+                .setFields(
+                    {
+                        name: "Giveaway ID",
+                        value: `${dbmessage.id}`
+                    },
+                    {
+                        name: "Ends in",
+                        value: timeLeft,
+                    },
+                    {
+                        name: "Hosted By",
+                        value: `<@${interaction.user.id}>`
+                    },
+                    {
+                        name: "Entries",
+                        value: `${gaEntriesCount}`
+                    },
+                )
+                gamessage.edit({ embeds: [giveawayEmbed], components: [row] })
+                if (secondsLeft <= 0) clearInterval(countdownInterval)
+            },1000)
 
             setTimeout(async () => {
                 interaction.deleteReply()
