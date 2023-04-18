@@ -22,6 +22,10 @@ function formatTime(seconds) {
     return `${hours > 0 ? hours + 'h ' : ''}${minutes > 0 ? minutes + 'm ' : ''}${secondsLeft}s`
 }
 
+function random (min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
@@ -64,7 +68,7 @@ module.exports = {
             const dbmessage = await dbchannel.send({ embeds: [dbEmbed] })
 
             const duration = giveawayDuration.split(' ')
-            const timeInSeconds = parseInt(duration[0]) * (duration[1] === 'h' ? 3600 : 60)
+            const timeInSeconds = parseFloat(duration[0]) * (duration[1] === 'h' ? 3600 : 60)
 
             const giveawayEmbed = new EmbedBuilder()
             .setTitle(`${giveawayPrize}`)
@@ -142,7 +146,37 @@ module.exports = {
                     },
                 )
                 gamessage.edit({ embeds: [giveawayEmbed], components: [row] })
-                if (secondsLeft <= 0) clearInterval(countdownInterval)
+                if (secondsLeft <= 0) {
+                    const winnerNumber = random(0, gaEntriesCount-1)
+                    const winner = await interaction.client.users.fetch(gaEntriesSplit[winnerNumber])
+                    giveawayEmbed.setTitle(`${giveawayPrize}`)
+                    .setDescription(`${giveawayDesc}`)
+                    .setTimestamp()
+                    .setFields(
+                        {
+                            name: "Giveaway ID",
+                            value: `${dbmessage.id}`
+                        },
+                        {
+                            name: "Ended",
+                            value: ' ',
+                        },
+                        {
+                            name: "Hosted By",
+                            value: `<@${interaction.user.id}>`
+                        },
+                        {
+                            name: "Winner(s)",
+                            value: `${winner.username}`
+                        },
+                        {
+                            name: "Entries",
+                            value: `${gaEntriesCount}`
+                        },
+                    )
+                    gamessage.edit({ embeds: [giveawayEmbed], components: [] })
+                    clearInterval(countdownInterval)
+                }
             },1000)
 
             setTimeout(async () => {
@@ -227,7 +261,7 @@ module.exports = {
                     value: `${gaID}`
                 },
                 {
-                    name: "Duration",
+                    name: "Ends in",
                     value: `${gaDuration}`
                 },
                 {
