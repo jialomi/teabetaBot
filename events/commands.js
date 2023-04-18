@@ -392,7 +392,7 @@ module.exports = {
             const fifthActionRow = new ActionRowBuilder()
             .addComponents(giveawayChannels)
 
-            modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow)
+            modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow, fifthActionRow)
 
             await interaction.showModal(modal)
         }

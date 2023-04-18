@@ -39,7 +39,7 @@ module.exports = {
             const giveawayNumberOfWinners = parseInt(interaction.fields.getTextInputValue("giveawayNumberOfWinners"))
             const giveawayPrize = interaction.fields.getTextInputValue("giveawayPrize")
             const giveawayDesc = interaction.fields.getTextInputValue("giveawayDesc")
-            // const giveawayChannels = interaction.fields.getTextInputValue("giveawayChannels").split(",")
+            const giveawayChannels = interaction.fields.getTextInputValue("giveawayChannels").split(",")
 
             const dbEmbed = new EmbedBuilder()
             .setTitle("Giveaway Database Created")
@@ -102,8 +102,112 @@ module.exports = {
             const row = new ActionRowBuilder()
             .setComponents(entryButton)
 
-            const gamessage = await interaction.channel.send({ embeds: [giveawayEmbed], components: [row] })
+            let isFirstLoop = true;
+            let isFirstLoopDel = true;
+            for (const channelID of giveawayChannels) {
+                const gachannel = await interaction.client.channels.cache.get(channelID)
+                const gamessage = await gachannel.send({ embeds: [giveawayEmbed], components: [row] })
+                
+                if (isFirstLoop) {
+                    await interaction.reply({ content: "Giveaway Started", ephemeral: true })
+                    isFirstLoop = false;
+                } else {
+                    await interaction.followUp({ content: "Giveaway Started", ephemeral: true })
+                }
 
+                let secondsLeft = timeInSeconds
+
+                const countdownInterval = setInterval(async () => {
+                    secondsLeft--
+                    const timeLeft = secondsLeft > 0 ? formatTime(secondsLeft) : 'Ended'
+                    const gachannel = await interaction.client.channels.cache.get(giveawayDatabaseChannelID)
+                    const gamessages = await gachannel.messages.fetch(dbmessage.id)
+                    const gaEmbed = gamessages.embeds
+                    const embedMessage = gaEmbed[0]
+                    let gaEntries = embedMessage.fields[4].value
+                    let gaEntriesSplit = gaEntries.split("\n")
+                    let gaEntriesCount = 0;
+
+                    if (gaEntries === '') {
+                        gaEntriesCount = 0
+                    } else {
+                        gaEntriesCount = gaEntriesSplit.length
+                    }
+
+                    giveawayEmbed.setTitle(`${giveawayPrize}`)
+                    .setDescription(`${giveawayDesc}`)
+                    .setTimestamp()
+                    .setFields(
+                        {
+                            name: "Giveaway ID",
+                            value: `${dbmessage.id}`
+                        },
+                        {
+                            name: "Ends in",
+                            value: timeLeft,
+                        },
+                        {
+                            name: "Hosted By",
+                            value: `<@${interaction.user.id}>`
+                        },
+                        {
+                            name: "Entries",
+                            value: `${gaEntriesCount}`
+                        },
+                    )
+                    gamessage.edit({ embeds: [giveawayEmbed], components: [row] })
+                    if (secondsLeft <= 0) {
+
+                        const winners = []
+                        while (winners.length < giveawayNumberOfWinners) {
+                            const winnerNumber = random(0, gaEntriesCount-1)
+                            const gaEntriesDSplit = gaEntriesSplit[winnerNumber].split(",")
+                            const winner = await interaction.client.users.fetch(gaEntriesDSplit[0])
+                            if (!winners.includes(winner.tag)) {
+                                const text = `${winner.tag} from ${gaEntriesDSplit[1]}`
+                                winners.push(text)
+                            }
+                        }
+                        giveawayEmbed.setTitle(`${giveawayPrize}`)
+                        .setDescription(`${giveawayDesc}`)
+                        .setTimestamp()
+                        .setFields(
+                            {
+                                name: "Giveaway ID",
+                                value: `${dbmessage.id}`
+                            },
+                            {
+                                name: "Ended",
+                                value: ' ',
+                            },
+                            {
+                                name: "Hosted By",
+                                value: `<@${interaction.user.id}>`
+                            },
+                            {
+                                name: "Winner(s)",
+                                value: `${winners.join("\n")}`
+                            },
+                            {
+                                name: "Entries",
+                                value: `${gaEntriesCount}`
+                            },
+                        )
+                        gamessage.edit({ embeds: [giveawayEmbed], components: [] })
+                        clearInterval(countdownInterval)
+                    }
+                },1000)
+                
+                setTimeout(async () => {
+                    if (isFirstLoopDel) {
+                        interaction.deleteReply()
+                        isFirstLoopDel = false
+                    }
+                },5000)
+            }
+            // const gamessage = await interaction.channel.send({ embeds: [giveawayEmbed], components: [row] })
+
+            /*
             await interaction.reply({ content: "Giveaway Started", ephemeral: true })
 
             let secondsLeft = timeInSeconds
@@ -192,6 +296,7 @@ module.exports = {
             setTimeout(async () => {
                 interaction.deleteReply()
             },5000)
+            */
         }
 
         if (interaction.customId === "entryButton") {
@@ -215,13 +320,24 @@ module.exports = {
             const dbDescription = dbEmbedMessage.fields[3].value
             let dbParticipants = dbEmbedMessage.fields[4].value
 
-            if (dbParticipants.split("\n").includes(interaction.user.id)) {
-                interaction.reply({ content: "You are already inside the Giveaway", ephemeral: true })
+            let test = `${interaction.user.id}`
 
-                setTimeout(async () => {
-                    interaction.deleteReply()
-                },5000)
+            const userID = interaction.user.id
+            const serverName = interaction.guild.name
 
+            if (dbParticipants.split("\n").some(entry => {
+                const [id, server] = entry.split(",")
+                return id === userID && server !== serverName
+            })) {
+                interaction.reply({ content: "You have already entered this giveaway from a different server.", ephemeral: true })
+                return
+            }
+
+            if (dbParticipants.split("\n").some(entry => {
+                const [id, server] = entry.split(",")
+                return id === userID && server === serverName
+            })) {
+                interaction.reply({ content: "You have already entered this giveaway from this server.", ephemeral: true })
                 return
             }
 
