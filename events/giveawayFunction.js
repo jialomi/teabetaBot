@@ -41,6 +41,12 @@ module.exports = {
             const giveawayDesc = interaction.fields.getTextInputValue("giveawayDesc")
             const giveawayChannels = interaction.fields.getTextInputValue("giveawayChannels").split(",")
 
+            const duration = giveawayDuration.split(' ')
+            const timeInSeconds = parseFloat(duration[0]) * (duration[1] === 'h' ? 3600 : 60)
+            const endTime = new Date(Date.now() + timeInSeconds * 1000)
+
+            console.log(new Date(endTime).toUTCString())
+
             const dbEmbed = new EmbedBuilder()
             .setTitle("Giveaway Database Created")
             .setFields(
@@ -71,9 +77,6 @@ module.exports = {
             )
 
             const dbmessage = await dbchannel.send({ embeds: [dbEmbed] })
-
-            const duration = giveawayDuration.split(' ')
-            const timeInSeconds = parseFloat(duration[0]) * (duration[1] === 'h' ? 3600 : 60)
 
             const giveawayEmbed = new EmbedBuilder()
             .setTitle(`${giveawayPrize}`)
@@ -115,8 +118,6 @@ module.exports = {
                 if (isFirstLoop) {
                     await interaction.reply({ content: "Giveaway Started", ephemeral: true })
                     isFirstLoop = false;
-                } else {
-                    await interaction.followUp({ content: "Giveaway Started", ephemeral: true })
                 }
 
                 let secondsLeft = timeInSeconds
@@ -162,7 +163,12 @@ module.exports = {
                     gamessage.edit({ embeds: [giveawayEmbed], components: [row] })
                     if (secondsLeft <= 0) {
 
-                        const winner = embedMessage.fields[5].value
+                        let winner = embedMessage.fields[5].value
+
+                        if (winner === "") {
+                            winner = "No winners"
+                        }
+
                         giveawayEmbed.setTitle(`${giveawayPrize}`)
                         .setDescription(`${giveawayDesc}`)
                         .setTimestamp()
@@ -200,6 +206,7 @@ module.exports = {
                     }
                 },5000)
             }
+        }
             // const gamessage = await interaction.channel.send({ embeds: [giveawayEmbed], components: [row] })
 
             /*
@@ -292,7 +299,7 @@ module.exports = {
                 interaction.deleteReply()
             },5000)
             */
-        }
+        
 
         if (interaction.customId === "entryButton") {
 
