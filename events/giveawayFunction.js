@@ -63,6 +63,10 @@ module.exports = {
                 {
                     name: "Participants",
                     value: ` `
+                },
+                {
+                    name: "Winner(s)",
+                    value: ` `
                 }
             )
 
@@ -158,16 +162,7 @@ module.exports = {
                     gamessage.edit({ embeds: [giveawayEmbed], components: [row] })
                     if (secondsLeft <= 0) {
 
-                        const winners = []
-                        while (winners.length < giveawayNumberOfWinners) {
-                            const winnerNumber = random(0, gaEntriesCount-1)
-                            const gaEntriesDSplit = gaEntriesSplit[winnerNumber].split(",")
-                            const winner = await interaction.client.users.fetch(gaEntriesDSplit[0])
-                            if (!winners.includes(winner.tag)) {
-                                const text = `${winner.tag} from ${gaEntriesDSplit[1]}`
-                                winners.push(text)
-                            }
-                        }
+                        const winner = embedMessage.fields[5].value
                         giveawayEmbed.setTitle(`${giveawayPrize}`)
                         .setDescription(`${giveawayDesc}`)
                         .setTimestamp()
@@ -186,7 +181,7 @@ module.exports = {
                             },
                             {
                                 name: "Winner(s)",
-                                value: `${winners.join("\n")}`
+                                value: `${winner}`
                             },
                             {
                                 name: "Entries",
@@ -319,6 +314,7 @@ module.exports = {
             const dbPrize = dbEmbedMessage.fields[2].value
             const dbDescription = dbEmbedMessage.fields[3].value
             let dbParticipants = dbEmbedMessage.fields[4].value
+            let dbParticipantsSplit = dbParticipants.split("\n")
 
             let test = `${interaction.user.id}`
 
@@ -347,6 +343,22 @@ module.exports = {
                 dbParticipants = dbParticipants + `\n${interaction.user.id},${interaction.guild.name}`
             }
             
+            const winners = []
+            if (dbParticipantsSplit.length > parseInt(dbNumberOfWinners)) {
+                while (winners.length < parseInt(dbNumberOfWinners)) {
+                    const winnerNumber = random(0, dbParticipantsSplit.length-1)
+                    const dbParticipantsDSplit = dbParticipantsSplit[winnerNumber].split(",")
+                    const winner = await interaction.client.users.fetch(dbParticipantsDSplit[0])
+                    if (!winners.includes(winner.tag)) {
+                        const text = `${winner.tag} from ${dbParticipantsDSplit[1]}`
+                        winners.push(text)
+                    }
+                }
+            } else {
+                winners.push("Not Decided Yet")
+            }
+
+            console.log(winners.join("\n"))
 
             const embed = new EmbedBuilder()
             .setTitle("Giveaway Database Created")
@@ -370,6 +382,10 @@ module.exports = {
                 {
                     name: "Participants",
                     value: `${dbParticipants}`
+                },
+                {
+                    name: "Winner(s)",
+                    value: `${winners.join("\n")}`
                 }
             )
             dbmessage.edit({ embeds: [embed] })
