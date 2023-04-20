@@ -423,7 +423,6 @@ module.exports = {
             const dbPrize = dbEmbedMessage.fields[2].value
             const dbDescription = dbEmbedMessage.fields[3].value
             let dbParticipants = dbEmbedMessage.fields[4].value
-            let dbParticipantsSplit = dbParticipants.split("\n")
 
             let test = `${interaction.user.id}`
 
@@ -451,6 +450,8 @@ module.exports = {
             } else {
                 dbParticipants = dbParticipants + `\n${interaction.user.id},${interaction.guild.name}`
             }
+
+            let dbParticipantsSplit = dbParticipants.split("\n")
             
             const winners = []
             if (dbParticipantsSplit.length > parseInt(dbNumberOfWinners)) {
