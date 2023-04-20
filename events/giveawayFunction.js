@@ -454,14 +454,16 @@ module.exports = {
             let dbParticipantsSplit = dbParticipants.split("\n")
             
             const winners = []
+            const winnersText = []
             if (dbParticipantsSplit.length >= parseInt(dbNumberOfWinners)) {
                 while (winners.length < parseInt(dbNumberOfWinners)) {
                     const winnerNumber = random(0, dbParticipantsSplit.length-1)
                     const dbParticipantsDSplit = dbParticipantsSplit[winnerNumber].split(",")
                     const winner = await interaction.client.users.fetch(dbParticipantsDSplit[0])
-                    if (!winners.includes(winner.tag)) {
+                    if (!winners.includes(winner.id)) {
                         const text = `${winner.tag} from ${dbParticipantsDSplit[1]}`
-                        winners.push(text)
+                        winners.push(winner.id)
+                        winnersText.push(text)
                     }
                 }
             } else {
