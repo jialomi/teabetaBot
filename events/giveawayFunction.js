@@ -162,9 +162,7 @@ module.exports = {
                 const countdownInterval = setInterval(async () => {
                     const currentTime = new Date(Date.now())
                     if (currentTime.getTime() === endTime.getTime()) {
-                        const gachannel = await interaction.client.channels.cache.get(giveawayDatabaseChannelID)
-                        const gamessages = await gachannel.messages.fetch(dbmessage.id)
-                        const gaEmbed = gamessages.embeds
+                        const gaEmbed = dbmessage.embeds
                         const embedMessage = gaEmbed[0]
                         let gaEntries = embedMessage.fields[4].value
                         let gaEntriesSplit = gaEntries.split("\n")
