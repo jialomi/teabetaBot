@@ -371,7 +371,7 @@ module.exports = {
 
             console.log(!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(kingsguardRole) && !member.roles.cache.has(knightRole) && !member.roles.cache.has(devRole) && !member.roles.cache.has(adminRoleId))
 
-            if (!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(kingsguardRole) && !member.roles.cache.has(knightRole) && !member.roles.cache.has(devRole)) {
+            if (!member.roles.cache.has(grandcounsilRole) && !member.roles.cache.has(kingsguardRole) && !member.roles.cache.has(knightRole) && !member.roles.cache.has(devRole) && !member.roles.cache.has(adminRoleId)) {
                 interaction.reply({ content: "You are not Authorised to perform this action!", ephemeral: true})
 
                 setTimeout(async () => {
