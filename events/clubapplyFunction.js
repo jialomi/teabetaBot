@@ -447,8 +447,8 @@ module.exports = {
             )
 
             const userMember = await guild.members.fetch(discordID)
-            await userMember.roles.remove(guestRole)
             await userMember.roles.add(memberRole)
+            await userMember.roles.remove(guestRole)
             await userMember.setNickname(ign)
 
             const channelId = interaction.channelId
