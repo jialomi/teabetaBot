@@ -454,7 +454,7 @@ module.exports = {
             let dbParticipantsSplit = dbParticipants.split("\n")
             
             const winners = []
-            if (dbParticipantsSplit.length > parseInt(dbNumberOfWinners)) {
+            if (dbParticipantsSplit.length >= parseInt(dbNumberOfWinners)) {
                 while (winners.length < parseInt(dbNumberOfWinners)) {
                     const winnerNumber = random(0, dbParticipantsSplit.length-1)
                     const dbParticipantsDSplit = dbParticipantsSplit[winnerNumber].split(",")
