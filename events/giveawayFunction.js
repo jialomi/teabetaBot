@@ -158,7 +158,7 @@ module.exports = {
                         },
                     )
                     gamessage.edit({ embeds: [giveawayEmbed], components: [row] })
-                },5000)
+                },10000)
                 const countdownInterval = setInterval(async () => {
                     const currentTime = new Date(Date.now())
                     if (currentTime.getTime() === endTime.getTime()) {
