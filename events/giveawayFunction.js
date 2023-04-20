@@ -161,7 +161,7 @@ module.exports = {
                 },10000)
                 const countdownInterval = setInterval(async () => {
                     const currentTime = new Date(Date.now())
-                    if (currentTime.getTime() === endTime.getTime()) {
+                    if (currentTime.getTime() >= endTime.getTime()) {
                         const gaEmbed = dbmessage.embeds
                         const embedMessage = gaEmbed[0]
                         let gaEntries = embedMessage.fields[4].value
