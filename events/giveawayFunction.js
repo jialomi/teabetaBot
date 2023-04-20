@@ -468,9 +468,10 @@ module.exports = {
                 }
             } else {
                 winners.push("Not Decided Yet")
+                winnersText.push("Not Decided Yet")
             }
 
-            console.log(winners.join("\n"))
+            console.log(winnersText.join("\n"))
 
             const embed = new EmbedBuilder()
             .setTitle("Giveaway Database Created")
