@@ -497,7 +497,7 @@ module.exports = {
                 },
                 {
                     name: "Winner(s)",
-                    value: `${winners.join("\n")}`
+                    value: `${winnersText.join("\n")}`
                 }
             )
             dbmessage.edit({ embeds: [embed] })
