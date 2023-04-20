@@ -44,7 +44,8 @@ module.exports = {
             const duration = giveawayDuration.split(' ')
             const timeInSeconds = parseFloat(duration[0]) * (duration[1] === 'h' ? 3600 : 60)
             const endTime = new Date(Date.now() + timeInSeconds * 1000)
-            const endTimeUTC = new Date(endTime).toUTCString()
+            const unixEndTimeStamp = Math.floor(endTime.getTime() / 1000)
+            console.log(unixEndTimeStamp)
             console.log(new Date(Date.now()))
             console.log(endTime)
 
@@ -91,8 +92,8 @@ module.exports = {
                     value: `${dbmessage.id}`
                 },
                 {
-                    name: "Ends at",
-                    value: `${endTimeUTC}`,
+                    name: "Ends in",
+                    value: `<t:${unixEndTimeStamp}:R>`,
                 },
                 {
                     name: "Hosted By",
@@ -145,8 +146,8 @@ module.exports = {
                             value: `${dbmessage.id}`
                         },
                         {
-                            name: "Ends at",
-                            value: `${endTimeUTC}`,
+                            name: "Ends in",
+                            value: `<t:${unixEndTimeStamp}:R>`,
                         },
                         {
                             name: "Hosted By",
@@ -189,8 +190,8 @@ module.exports = {
                                 value: `${dbmessage.id}`
                             },
                             {
-                                name: "Ended",
-                                value: ' ',
+                                name: "Ended at",
+                                value: `<t:${unixEndTimeStamp}:f>`,
                             },
                             {
                                 name: "Hosted By",
@@ -511,7 +512,7 @@ module.exports = {
                     value: `${gaID}`
                 },
                 {
-                    name: "Ends at",
+                    name: "Ends in",
                     value: `${gaDuration}`
                 },
                 {
