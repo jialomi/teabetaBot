@@ -56,7 +56,7 @@ module.exports = {
             .setFields(
                 {
                     name: "Duration",
-                    value: `${giveawayDuration}`
+                    value: `${giveawayDuration}, ends at <t:${unixEndTimeStamp}:f>`
                 },
                 {
                     name: "Number Of Winners",
