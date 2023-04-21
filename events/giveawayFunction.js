@@ -1,4 +1,4 @@
-const { Events, EmbedBuilder, ButtonBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle} = require("discord.js")
+const { Events, EmbedBuilder, ButtonBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, Collection} = require("discord.js")
 
 const guildId = "288378882418016256"
 const memberRole = "288385193285386248"
@@ -504,9 +504,15 @@ module.exports = {
 
             const userID = interaction.user.id
             const serverName = interaction.guild.name
+            const DBchannel = await interaction.client.channels.cache.get(dbchannelID)
+            let dbchannelmessage = await DBchannel.messages.fetch()
+            let dbchannelParticipants = dbchannelmessage.map(msg => msg.content).join("\n")
 
             
             if (dbParticipants.split("\n").some(entry => {
+                const [id, server] = entry.split(",")
+                return id === userID && server !== serverName
+            }) || dbchannelParticipants.split('\n').some(entry => {
                 const [id, server] = entry.split(",")
                 return id === userID && server !== serverName
             })) {
@@ -517,6 +523,9 @@ module.exports = {
             if (dbParticipants.split("\n").some(entry => {
                 const [id, server] = entry.split(",")
                 return id === userID && server === serverName
+            }) || dbchannelParticipants.split('\n').some(entry => {
+                const [id, server] = entry.split(",")
+                return id === userID && server !== serverName
             })) {
                 interaction.reply({ content: "You have already entered this giveaway from this server.", ephemeral: true })
                 return
@@ -533,8 +542,7 @@ module.exports = {
 
             // console.log(winnersText.join("\n"))
             if (dbParticipantsSplit.length >= 5) {
-                const dbchannel = await interaction.client.channels.cache.get(dbchannelID)
-                await dbchannel.send(dbParticipants)
+                await DBchannel.send(dbParticipants)
 
                 const resetEmbed = new EmbedBuilder()
                 .setTitle("Giveaway Database Created")
