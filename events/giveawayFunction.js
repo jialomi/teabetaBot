@@ -505,7 +505,7 @@ module.exports = {
             const userID = interaction.user.id
             const serverName = interaction.guild.name
 
-            /*
+            
             if (dbParticipants.split("\n").some(entry => {
                 const [id, server] = entry.split(",")
                 return id === userID && server !== serverName
@@ -521,7 +521,7 @@ module.exports = {
                 interaction.reply({ content: "You have already entered this giveaway from this server.", ephemeral: true })
                 return
             }
-            */
+            
 
             if (dbParticipants === "") {
                 dbParticipants = `${interaction.user.id},${interaction.guild.name}`
@@ -530,26 +530,6 @@ module.exports = {
             }
 
             let dbParticipantsSplit = dbParticipants.split("\n")
-            
-            /*
-            const winners = []
-            const winnersText = []
-            if (dbParticipantsSplit.length >= parseInt(dbNumberOfWinners)) {
-                while (winners.length < parseInt(dbNumberOfWinners)) {
-                    const winnerNumber = random(0, dbParticipantsSplit.length-1)
-                    const dbParticipantsDSplit = dbParticipantsSplit[winnerNumber].split(",")
-                    const winner = await interaction.client.users.fetch(dbParticipantsDSplit[0])
-                    if (!winners.includes(winner.id)) {
-                        const text = `${winner.tag} from ${dbParticipantsDSplit[1]}`
-                        winners.push(winner.id)
-                        winnersText.push(text)
-                    }
-                }
-            } else {
-                winners.push("Not Decided Yet")
-                winnersText.push("Not Decided Yet")
-            }
-            */
 
             // console.log(winnersText.join("\n"))
             if (dbParticipantsSplit.length >= 5) {
