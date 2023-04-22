@@ -510,12 +510,16 @@ module.exports = {
             const DBchannel = await interaction.client.channels.cache.get(dbchannelID)
             let dbchannelmessage = await DBchannel.messages.fetch()
             let dbchannelParticipants = dbchannelmessage.map(msg => msg.content).join("\n")
-
             
             if (dbParticipants.split("\n").some(entry => {
                 const [id, server] = entry.split(",")
                 return id === userID && server !== serverName
-            }) || dbchannelParticipants.split('\n').some(entry => {
+            })) {
+                interaction.reply({ content: "You have already entered this giveaway from a different server.", ephemeral: true })
+                return
+            }
+
+            if (dbchannelParticipants.split('\n').some(entry => {
                 const [id, server] = entry.split(",")
                 return id === userID && server !== serverName
             })) {
@@ -526,9 +530,14 @@ module.exports = {
             if (dbParticipants.split("\n").some(entry => {
                 const [id, server] = entry.split(",")
                 return id === userID && server === serverName
-            }) || dbchannelParticipants.split('\n').some(entry => {
+            })) {
+                interaction.reply({ content: "You have already entered this giveaway from this server.", ephemeral: true })
+                return
+            }
+
+            if (dbchannelParticipants.split('\n').some(entry => {
                 const [id, server] = entry.split(",")
-                return id === userID && server !== serverName
+                return id === userID && server === serverName
             })) {
                 interaction.reply({ content: "You have already entered this giveaway from this server.", ephemeral: true })
                 return
@@ -544,7 +553,7 @@ module.exports = {
             let dbParticipantsSplit = dbParticipants.split("\n")
 
             // console.log(winnersText.join("\n"))
-            if (dbParticipantsSplit.length >= 5) {
+            if (dbParticipantsSplit.length >= 10) {
                 await DBchannel.send(dbParticipants)
 
                 const resetEmbed = new EmbedBuilder()
