@@ -263,5 +263,122 @@ module.exports = {
 
             await editMessage.edit({ embeds: [embed], components: [] })
         }
+
+        if (interaction.customId === "laezclubDeny") {
+            
+            const modal = new ModalBuilder()
+            .setCustomId('laezclubdenyReason')
+            .setTitle("Deny Application Reason")
+
+            const clubdenyReason = new TextInputBuilder()
+            .setCustomId('laezclubdenyReason')
+            .setLabel('Deny Reason')
+            .setRequired(false)
+            .setStyle(TextInputStyle.Paragraph)
+
+            const firstActionRow = new ActionRowBuilder().setComponents(clubdenyReason)
+
+            modal.addComponents(firstActionRow)
+
+            await interaction.showModal(modal)
+        }
+
+        if (interaction.customId === "laezclubdenyReason") {
+            
+            const userMessage = await interaction.message.embeds
+            const embedMessage = userMessage[0]
+            const ign = embedMessage.fields[2].value
+            const discordTag = embedMessage.fields[0].value
+            const discordIdentity = embedMessage.fields[1].value
+            const discordID = discordTag.match(/\d+/)[0]
+            const clubanswerQn2 = embedMessage.fields[3].value
+            const clubanswerQn3 = embedMessage.fields[4].value
+            const clubanswerQn4 = embedMessage.fields[5].value
+            const rawImage = embedMessage.fields[6].value
+            const image = embedMessage.image.url
+            const thumbnail = embedMessage.thumbnail.url
+
+            let denyReason = interaction.fields.getTextInputValue("laezclubdenyReason")
+            let denyTemplate = "\n```We thank you for your time & efforts put into the Application, however we regret to inform you that your Club Application to Laezaria has been Denied```"
+            let denyReasonFinal
+
+            if (denyReason === "") {
+                denyReasonFinal = discordTag + "\n```We thank you for your time & efforts put into the Application, however we regret to inform you that your Club Application to Laezaria has been Denied```"
+            } else {
+                denyReasonFinal = discordTag + "\n```We thank you for your time & efforts put into the Application, however we regret to inform you that your Club Application to Laezaria has been Denied due to:\n\n" + denyReason + "```"
+            }
+
+            const embed = new EmbedBuilder()
+            .setTitle("Application to join Laezaria Unsuccessful")
+            .setDescription("Applicant Information (Denied By Staff)")
+            .setColor(0xff0000)
+            .setImage(image)
+            .setThumbnail(thumbnail)
+            .setFields(
+                {
+                    name: "Discord User",
+                    value: `${discordTag}`,
+                    inline: true,
+                },
+                {
+                    name: "Discord Tag",
+                    value: `${discordIdentity}`,
+                    inline: true,
+                },
+                {
+                    name: "Trove In game Name",
+                    value: `${ign}`,
+                },
+                {
+                    name: "What about Trove keeps you playing?",
+                    value: `${clubanswerQn2}`
+                },
+                {
+                    name: "What can you tell us about yourself?",
+                    value: `${clubanswerQn3}`
+                },
+                {
+                    name: "Why do you want to join The North?",
+                    value: `${clubanswerQn4}`
+                },
+                {
+                    name: "Raw Image URL",
+                    value: `${rawImage}`
+                },
+                {
+                    name: "Denied By",
+                    value: `<@${interaction.user.id}>`
+                },
+            )
+
+            const embed2 = new EmbedBuilder()
+            .setTitle("Application to join Laezaaria Unsuccessful")
+            .setDescription(`${denyReasonFinal}`)
+            .setThumbnail(thumbnail)
+            .setAuthor(
+                {
+                    name: interaction.client.user.username,
+                    iconURL: interaction.client.user.displayAvatarURL()
+                }
+            )
+
+            const user = await interaction.client.users.fetch(discordID)
+
+            const channel = interaction.client.channels.cache.get(interaction.channelId)
+            const editMessage = await channel.messages.fetch(interaction.message.id)
+
+            user.send({ embeds: [embed2] })
+            editMessage.edit({ content: denyReasonFinal, embeds: [embed], components: [] })
+
+            interaction.reply({content: "Deny Successful", ephemeral: true})
+
+            setTimeout(async () => {
+                try {
+                    await interaction.deleteReply()
+                } catch (error) {
+                    console.error(error)
+                    }
+            }, 5000)
+        }
     }
 }
