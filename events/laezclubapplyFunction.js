@@ -15,6 +15,18 @@ module.exports = {
         // Laezaria Appl Button Pressed Reaction
         if (interaction.customId === "laezapplyclubButton") {
 
+            interaction.reply({ content: "Function Down for now", ephemeral: true })
+
+            setTimeout(async() => {
+                try {
+                    await interaction.deleteReply()
+                } catch (error) {
+                    console.error(error)
+                }
+            }, 5000)
+
+            return
+            
             const guild = interaction.guild
             const member = await guild.members.fetch(interaction.user.id)
 
@@ -32,6 +44,7 @@ module.exports = {
                 return;
             }*/
 
+            /*
             const modal = new ModalBuilder()
             .setCustomId("laezclubapplyModal")
             .setTitle("LAEZARIA CLUB APPLICATION")
@@ -82,6 +95,7 @@ module.exports = {
             modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow, fifthActionRow)
             
             await interaction.showModal(modal)
+            */
         }
 
         if (interaction.customId === "laezclubapplyModal") {
