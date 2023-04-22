@@ -127,6 +127,7 @@ module.exports = {
             let isFirstLoopDel = true;
             for (const channelID of giveawayChannels) {
 
+                console.log(channelID)
                 const gachannel = await interaction.client.channels.cache.get(channelID)
                 const gamessage = await gachannel.send({ embeds: [giveawayEmbed], components: [row] })
                 
