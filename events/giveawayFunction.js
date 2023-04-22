@@ -227,7 +227,8 @@ module.exports = {
                             value: `${gaEntriesCount}`
                         },
                     )
-                    gamessage.edit({ embeds: [giveawayEmbed], components: [] })
+                    await gamessage.edit({ embeds: [giveawayEmbed], components: [] })
+                    await channel.send(`winner is ${winnersText.join('\n')}`)
                     clearInterval(entryCountInterval)
                 }, timeLeft)
 
