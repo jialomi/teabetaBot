@@ -164,7 +164,7 @@ module.exports = {
                         },
                     )
                     const timeLeftInterval = endTime - Date.now()
-                    if (timeLeftInterval < 6000) {
+                    if (timeLeftInterval < 10000) {
                         gamessage.edit({ embeds: [giveawayEmbed], components: [] })
                         clearInterval(entryCountInterval)
                     } else {
