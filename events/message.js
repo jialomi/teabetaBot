@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require("discord.js")
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, embedLength } = require("discord.js")
 
 module.exports = {
     name: "messageCreate",
@@ -295,7 +295,7 @@ module.exports = {
         }
         */
         
-        
+        /*
         if (message.content === "ruleEdit" && message.author.id === "998246368512585800") {
 
             const Weirwood = await message.guild.emojis.cache.find(emoji => emoji.name === 'Weirwood');
@@ -345,6 +345,7 @@ module.exports = {
 
 
         }
+        */
         
 
         /*
@@ -372,6 +373,108 @@ module.exports = {
             message.channel.send({ embeds: [reportEmbed] })
         }
         */
+
+        if (message.content === "laezapply" && message.author.id === "998246368512585800") {
+
+            const laezaria = await message.guild.emojis.cache.find(emoji => emoji.name === 'laezaria');
+
+            message.channel.send('https://cdn.discordapp.com/attachments/1065693431361454130/1099202988523917453/apply.png')
+            
+            const applyEmbed = new EmbedBuilder()
+            .setTitle(`Laezaria Club Application Guidelines`)
+            .setDescription('Follow these steps if you are not in the club in game but would like to apply to be. Please note that although we ask for Power Rank and Total Mastery, we **do not** have minimum requirements for them at the time.')
+            .setThumbnail('https://cdn.discordapp.com/attachments/1099183091853037608/1099189393811591198/Laezaria-Icon-Round-Transparent_2.png')
+            .setImage("https://cdn.discordapp.com/attachments/1099183091853037608/1099221343968428112/image.png")
+            .setFields(
+                {
+                    name: " ",
+                    value: "**1️⃣**  To start, click the **📋 Apply** button and fill out the form\n",
+                },
+                {
+                    name: " ",
+                    value: "**2️⃣**  Be patient and wait for your application to be approved by staff\n"
+                },
+                {
+                    name: " ",
+                    value: "**3️⃣**  Once you have been approved, your Discord nickname will be changed to your Trove IGN and you will be given the <@&259895578421362693> role"
+                },
+                {
+                    name: " ",
+                    value: "**4️⃣**  Make sure your DMs are open to people in the same server to receive updates about your application!\n"
+                },
+                {
+                    name: "--------------------------",
+                    value: " "
+                },
+                {
+                    name: "How to get image URL",
+                    value: 'Post your image in <#260283411527106561>\n Right-click the image and select "Copy Link"'
+                },
+                {
+                    name: "__Screenshot example for Mastery/PR image__",
+                    value: " "
+                }
+            )
+
+            applyEmbed.width = 600
+
+            const laezapplyclubButton = new ButtonBuilder()
+            .setCustomId('laezapplyclubButton')
+            .setLabel("📋 Apply")
+            .setStyle("Primary")
+
+            const row = new ActionRowBuilder()
+            .addComponents(laezapplyclubButton)
+
+            message.channel.send({ embeds: [applyEmbed], components: [row]})
+
+            message.channel.send("** **")
+            message.channel.send('https://cdn.discordapp.com/attachments/1065693431361454130/1099203018647404604/verify.png')
+
+            const verifyEmbed = new EmbedBuilder()
+            .setTitle(`Laezaria Verification Guidelines`)
+            .setDescription('Follow these steps if you are a club member in game but need the <@&259895578421362693> role in discord')
+            .setThumbnail("https://cdn.discordapp.com/attachments/1099183091853037608/1099189393811591198/Laezaria-Icon-Round-Transparent_2.png")
+            .setImage("https://cdn.discordapp.com/attachments/1099183091853037608/1099221666850160640/image.png")
+            .setFields(
+                {
+                    name: " ",
+                    value: "**1️⃣**  Navigate to the **✅ Verify** button below and click on it\n",
+                },
+                {
+                    name: " ",
+                    value: `**2️⃣**  A form will pop up and you must fill in your:\n\n> **${laezaria} Trove IGN**: Trove In Game Name\n> **${laezaria} Image of Proof**: An image URL of your **club roster** showing Laezaria as one of your clubs and your **character page** showing your username`
+                },
+                {
+                    name: " ",
+                    value: "** 3️⃣**  Once you have been approved, your Discord nickname will be changed to your Trove IGN and you will be given the <@&259895578421362693> role"
+                },
+                {
+                    name: "--------------------------",
+                    value: " "
+                },
+                {
+                    name: "How to get image URL",
+                    value: 'Post your image in <#260283411527106561>\n Right-click the image and select "Copy Link"'
+                },
+                {
+                    name: "__Screenshot example of Laezaria club membership__",
+                    value: " "
+                }
+            )
+
+            verifyEmbed.width = 600
+
+            const laezverifyButton = new ButtonBuilder()
+            .setCustomId('laezverifyButton')
+            .setLabel('✅ Verify')
+            .setStyle("Primary")
+
+            const verifyRow = new ActionRowBuilder()
+            .addComponents(laezverifyButton)
+
+            message.channel.send({ embeds: [verifyEmbed], components: [verifyRow]})
+        }
     }
 
 }
