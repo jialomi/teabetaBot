@@ -1,7 +1,7 @@
 const { Events, EmbedBuilder, ButtonBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle} = require("discord.js")
 
 const guildId = "131810843686993921"
-const memberRole = "259895578421362693"
+const laezmemberRole = "259895578421362693"
 const inboxChannelId = "1099183284115755008"
 
 function isImage(url) {
@@ -247,9 +247,9 @@ module.exports = {
             .setThumbnail(thumbnail)
             .setImage("https://cdn.discordapp.com/attachments/1099183284115755008/1099253139577765898/Laezaria-Icon-Round-Approved.png")
             
-            try{
+            try {
                 const userMember = await interaction.guild.members.fetch(discordID)
-                await userMember.roles.add(memberRole)
+                await userMember.roles.add(laezmemberRole)
                 await userMember.setNickname(ign)
             } catch (error) {
                 console.log(error)

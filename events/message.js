@@ -374,7 +374,7 @@ module.exports = {
         }
         */
 
-        if (message.content === "laezapply" && message.author.id === "998246368512585800") {
+        if (message.content === "laezapply") {
 
             const laezaria = await message.guild.emojis.cache.find(emoji => emoji.name === 'laezaria');
 
