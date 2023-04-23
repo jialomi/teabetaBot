@@ -15,17 +15,6 @@ module.exports = {
         // Laezaria Appl Button Pressed Reaction
         if (interaction.customId === "laezapplyclubButton") {
 
-            interaction.reply({ content: "Function Down for now", ephemeral: true })
-
-            setTimeout(async() => {
-                try {
-                    await interaction.deleteReply()
-                } catch (error) {
-                    console.error(error)
-                }
-            }, 5000)
-
-            return
             
             const guild = interaction.guild
             const member = await guild.members.fetch(interaction.user.id)
@@ -44,7 +33,7 @@ module.exports = {
                 return;
             }*/
 
-            /*
+            
             const modal = new ModalBuilder()
             .setCustomId("laezclubapplyModal")
             .setTitle("LAEZARIA CLUB APPLICATION")
@@ -95,7 +84,7 @@ module.exports = {
             modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow, fifthActionRow)
             
             await interaction.showModal(modal)
-            */
+            
         }
 
         if (interaction.customId === "laezclubapplyModal") {
@@ -206,7 +195,7 @@ module.exports = {
             const thumbnail = embedMessage.thumbnail.url
 
             const embed = new EmbedBuilder()
-            .setTitle("Application to Join THE NORTH Successful")
+            .setTitle("Application to join Laezaria Successful")
             .setDescription("Applicant Information (Approved By Staff)")
             .setColor(0x00ff00)
             .setImage(image)
@@ -223,28 +212,28 @@ module.exports = {
                     inline: true,
                 },
                 {
-                    name: "Trove In game Name",
+                    name: "What is your trove in game name?",
                     value: `${ign}`,
                 },
                 {
-                    name: "What about Trove keeps you playing?",
+                    name: "What is the PR on your highest class?",
                     value: `${clubanswerQn2}`
                 },
                 {
-                    name: "What can you tell us about yourself?",
+                    name: "What is your total mastery?",
                     value: `${clubanswerQn3}`
                 },
                 {
-                    name: "Why do you want to join The North?",
+                    name: "Why do you want to join this club?",
                     value: `${clubanswerQn4}`
-                },
-                {
-                    name: "Raw Image URL",
-                    value: `${rawImage}`
                 },
                 {
                     name: "Approved By",
                     value: `<@${interaction.user.id}>`
+                },
+                {
+                    name: "Raw Image URL",
+                    value: `${rawImage}`
                 },
             )
 
@@ -263,7 +252,8 @@ module.exports = {
             
             try {
                 const userMember = await interaction.guild.members.fetch(discordID)
-                await userMember.roles.add(laezmemberRole)
+                const memberRole = await interaction.guild.roles.cache.find((r) => r.name === 'Trove Club Member')
+                await userMember.roles.add(memberRole)
                 await userMember.setNickname(ign)
             } catch (error) {
                 console.log(error)
@@ -340,28 +330,28 @@ module.exports = {
                     inline: true,
                 },
                 {
-                    name: "Trove In game Name",
+                    name: "What is your trove in game name?",
                     value: `${ign}`,
                 },
                 {
-                    name: "What about Trove keeps you playing?",
+                    name: "What is the PR on your highest class?",
                     value: `${clubanswerQn2}`
                 },
                 {
-                    name: "What can you tell us about yourself?",
+                    name: "What is your total mastery?",
                     value: `${clubanswerQn3}`
                 },
                 {
-                    name: "Why do you want to join The North?",
+                    name: "Why do you want to join this club?",
                     value: `${clubanswerQn4}`
-                },
-                {
-                    name: "Raw Image URL",
-                    value: `${rawImage}`
                 },
                 {
                     name: "Denied By",
                     value: `<@${interaction.user.id}>`
+                },
+                {
+                    name: "Raw Image URL",
+                    value: `${rawImage}`
                 },
             )
 
