@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, embedLength } = require("discord.js")
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, embedLength, TextInputStyle } = require("discord.js")
 
 module.exports = {
     name: "messageCreate",
