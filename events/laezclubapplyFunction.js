@@ -15,6 +15,10 @@ module.exports = {
         // Laezaria Appl Button Pressed Reaction
         if (interaction.customId === "laezapplyclubButton") {
 
+            interaction.reply({ content: "Function down for now ", ephemeral: true })
+
+            
+            return
             
             const guild = interaction.guild
             const member = await guild.members.fetch(interaction.user.id)
