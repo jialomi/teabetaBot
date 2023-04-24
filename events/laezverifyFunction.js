@@ -14,10 +14,6 @@ module.exports = {
 
         if (interaction.customdId === "laezverifyButton") {
 
-            interaction.reply({ content: "Function down for now ", ephemeral: true })
-
-            return
-
             const modal = new ModalBuilder()
             .setCustomId('laezverifyModal')
             .setTitle("IGN VERIFICATION")
