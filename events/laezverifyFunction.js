@@ -12,7 +12,7 @@ module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
 
-        if (interaction.customdId === "laezverifyButton") {
+        if (interaction.customId === "laezverifyButton") {
 
             const modal = new ModalBuilder()
             .setCustomId('laezverifyModal')
@@ -34,18 +34,20 @@ module.exports = {
             .setRequired(true)
             .setPlaceholder('See "How to get Image URL" section')
 
-            const firstActionRow = new ActionRowBuilder.setComponents(laezverifyQn1)
-            const secondActionRow = new ActionRowBuilder.setComponents(laezverifyQn2)
+            const firstActionRow = new ActionRowBuilder().setComponents(laezverifyQn1)
+            const secondActionRow = new ActionRowBuilder().setComponents(laezverifyQn2)
 
             modal.addComponents(firstActionRow, secondActionRow)
 
             await interaction.showModal(modal)
         }
 
-        if (interaction.customdId === "laezverifyModal") {
+        if (interaction.customId === "laezverifyModal") {
+
+            console.log("verfication modal sent")
 
             const verifyanswerQn1 = interaction.fields.getTextInputValue("laezverifyQn1")
-            let rawImage = interaction.fields.getTextInputValue("laezverifyQn2")
+            let rawImage = await interaction.fields.getTextInputValue("laezverifyQn2")
 
             const inboxChannel = interaction.client.channels.cache.get(inboxChannelId)
 
@@ -125,7 +127,7 @@ module.exports = {
             const ign = embedMessage.fields[2].value
             const discordTag = embedMessage.fields[0].value
             const discordIdentity = embedMessage.fields[1].value
-            const dsicordID = discordTag.match(/\d+/)[0]
+            const discordID = discordTag.match(/\d+/)[0]
             const rawImage = embedMessage.fields[3].value
             const image = embedMessage.image.url
             const thumbnail = embedMessage.thumbnail.url
@@ -182,7 +184,7 @@ module.exports = {
                 console.error(error)
             }
     
-            const user = await interaction.client.users.fetch(dsicordID)
+            const user = await interaction.client.users.fetch(discordID)
             await user.send({ content: `Congratulations ${discordTag} ! Your IGN Verification has been approved/verified!`, embeds: [dmEmbed] })
     
             const channel = interaction.client.channels.cache.get(interaction.channelId)
@@ -217,15 +219,24 @@ module.exports = {
             const ign = embedMessage.fields[2].value
             const discordTag = embedMessage.fields[0].value
             const discordIdentity = embedMessage.fields[1].value
-            const dsicordID = discordTag.match(/\d+/)[0]
+            const discordID = discordTag.match(/\d+/)[0]
             const rawImage = embedMessage.fields[3].value
             const image = embedMessage.image.url
             const thumbnail = embedMessage.thumbnail.url
 
+            let denyReason = interaction.fields.getTextInputValue("laezverifydenyReason")
+            let denyReasonFinal;
+
+            if (denyReason === "") {
+                denyReasonFinal = discordTag + "\n```Your IGN Verification has been denied.```"
+            } else {
+                denyReasonFinal = discordTag + "\n```Your IGN Verification has been denied due to:\n\n" + denyReason + "```"
+            }
+
             const embed = new EmbedBuilder()
-            .setTitle("Laezaria IGN Verification Successful")
-            .setDescription("IGN Verification (Approved by Staff)")
-            .setColor(0x00FF00)
+            .setTitle("Laezaria IGN Verification Unsuccessful")
+            .setDescription("IGN Verification (Denied by Staff)")
+            .setColor(0xff0000)
             .setImage(image)
             .setThumbnail(thumbnail)
             .setFields(
@@ -252,6 +263,35 @@ module.exports = {
                     value: `${rawImage}`
                 }
             )
+
+            const embed2 = new EmbedBuilder()
+            .setTitle("Laezaria IGN Verification Unsuccessful")
+            .setDescription(denyReasonFinal)
+            .setThumbnail(thumbnail)
+            .setAuthor(
+                {
+                    name: interaction.client.user.username,
+                    iconURL: interaction.client.user.displayAvatarURL()
+                }
+            )
+
+            const user = await interaction.client.users.fetch(discordID)
+
+            const channel = interaction.client.channels.cache.get(interaction.channelId)
+            const editMessage = await channel.messages.fetch(interaction.message.id)
+
+            user.send({ embeds: [embed2] })
+            editMessage.edit({ content: denyReasonFinal, embeds: [embed], components: [] })
+
+            interaction.reply({content: "Deny Successful", ephemeral: true})
+
+            setTimeout(async () => {
+                try {
+                    await interaction.deleteReply()
+                } catch (error) {
+                    console.error(error)
+                    }
+            }, 5000)
 
         }
     }
