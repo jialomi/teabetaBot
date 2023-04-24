@@ -6,7 +6,7 @@ module.exports = {
         if (message.author.bot) {
             return
         }
-        /*
+        
         if (message.content === "test2" && message.author.id === "998246368512585800") {
             const discordChannel = message.client.channels.cache.get("1094639960742707321")
                 const guildId = "288378882418016256"
@@ -178,7 +178,7 @@ module.exports = {
                 .addComponents(morerolesButton, knightapplyButton)
 
                 message.channel.send({ content: `${maester} <@&288382741450588160> **(President)**\n${allmemberRoles[0]}\n\n${maester} <@&716773257683927101> **(VP)**\n${allmemberRoles[1]}\n\n${maester} <@&288382736480337920> **(Officer)**\n${allmemberRoles[2].join(' ')}\n\n${maester} <@&438818482692423683> **(Enforcer)**\n${allmemberRoles[3].join(' ')}\n\n${maester} <@&455248257161887754> **(Captain)**\n${allmemberRoles[4].join(' ')}\n\n For more info on roles, Click the **Role Guide** button below`, components: [row3]})
-        }*/
+        }
         /*
         if (message.content === "nosleep" && message.author.id === "998246368512585800") {
 
@@ -303,7 +303,7 @@ module.exports = {
             const TEA = await message.guild.emojis.cache.find(emoji => emoji.name === 'Alliance')
 
             const discordChannel = await message.client.channels.cache.get("1094639960742707321")
-            const editMessage = await discordChannel.messages.fetch("1096640632698703902")
+            const editMessage = await discordChannel.messages.fetch("1100106034523160757")
 
             const teaButton = new ButtonBuilder()
             .setCustomId("teaButton")
@@ -374,7 +374,7 @@ module.exports = {
         }
         */
 
-        if (message.content === "laezapply") {
+        if (message.content === "laezapply" && message.author.id === "998246368512585800") {
 
             const laezaria = await message.guild.emojis.cache.find(emoji => emoji.name === 'laezaria');
 

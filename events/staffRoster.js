@@ -7,7 +7,7 @@ module.exports = {
         const discordChannel = client.channels.cache.get("1094639960742707321")
         setInterval(async () => {
             try {
-                const sentMessage = await discordChannel.messages.fetch("1096640638549753996")
+                const sentMessage = await discordChannel.messages.fetch("1100106042412650598")
                 const guildId = "288378882418016256"
                 const guild = client.guilds.cache.get(guildId)
                 const maester = await client.guilds.cache.get(guildId).emojis.cache.find(emoji => emoji.name === 'maester');

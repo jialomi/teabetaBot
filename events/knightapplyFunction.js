@@ -19,6 +19,8 @@ module.exports = {
                 setTimeout(async () => {
                     await interaction.deleteReply()
                 },5000)
+
+                return
             }
 
             const modal = new ModalBuilder()
