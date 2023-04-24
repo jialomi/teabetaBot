@@ -307,9 +307,9 @@ module.exports = {
             let denyReasonFinal
 
             if (denyReason === "") {
-                denyReasonFinal = discordTag + "\n```We thank you for your time & efforts put into the Application, however we regret to inform you that your Club Application to Laezaria has been Denied```"
+                denyReasonFinal = discordTag + "\n```Thank you for the time and effort you put into applying to Laezaria. However, we regret to inform you that your application has been denied```"
             } else {
-                denyReasonFinal = discordTag + "\n```We thank you for your time & efforts put into the Application, however we regret to inform you that your Club Application to Laezaria has been Denied due to:\n\n" + denyReason + "```"
+                denyReasonFinal = discordTag + "\n```Thank you for the time and effort you put into applying to Laezaria. However, we regret to inform you that your application has been denied due to:\n\n" + denyReason + "```"
             }
 
             const embed = new EmbedBuilder()
