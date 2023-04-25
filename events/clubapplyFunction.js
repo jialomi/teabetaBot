@@ -312,7 +312,12 @@ module.exports = {
             const row2 = new ActionRowBuilder().addComponents(confirminviteButton)
 
             const user = await interaction.client.users.fetch(discordID)
-            await user.send({content: `Congratulations ${discordTag} ! Your Club Application has been Approved! Follow the Steps Below to fully join THE NORTH!`, embeds: [dmEmbed], components: [row]})
+
+            try {
+                await user.send({content: `Congratulations ${discordTag} ! Your Club Application has been Approved! Follow the Steps Below to fully join THE NORTH!`, embeds: [dmEmbed], components: [row]})                
+            } catch (error) {
+                console.error(error)
+            }
 
             const channelId = interaction.channelId
 
@@ -605,7 +610,11 @@ module.exports = {
             const channel = interaction.client.channels.cache.get(channelId)
             const editMessage = await channel.messages.fetch(interaction.message.id)
 
-            user.send({ embeds: [embed2]})
+            try {
+                user.send({ embeds: [embed2]})
+            } catch (error) {
+                console.error(error)
+            }
 
             editMessage.edit({ content: denyReasonFinal, embeds: [embed], components: [] })
             

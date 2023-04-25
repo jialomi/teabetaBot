@@ -185,8 +185,11 @@ module.exports = {
             }
     
             const user = await interaction.client.users.fetch(discordID)
-            await user.send({ content: `Congratulations ${discordTag} ! Your IGN Verification has been approved/verified!`, embeds: [dmEmbed] })
-    
+            try {
+                await user.send({ content: `Congratulations ${discordTag} ! Your IGN Verification has been approved/verified!`, embeds: [dmEmbed] })                
+            } catch (error) {
+                console.error(error)
+            }
             const channel = interaction.client.channels.cache.get(interaction.channelId)
             const editMessage = await channel.messages.fetch(interaction.message.id)
     
@@ -280,7 +283,12 @@ module.exports = {
             const channel = interaction.client.channels.cache.get(interaction.channelId)
             const editMessage = await channel.messages.fetch(interaction.message.id)
 
-            user.send({ embeds: [embed2] })
+            try {
+                user.send({ embeds: [embed2] })    
+            } catch (error) {
+                console.error(error)
+            }
+            
             editMessage.edit({ content: denyReasonFinal, embeds: [embed], components: [] })
 
             interaction.reply({content: "Deny Successful", ephemeral: true})
