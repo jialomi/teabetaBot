@@ -433,7 +433,7 @@ module.exports = {
 
             const verifyEmbed = new EmbedBuilder()
             .setTitle(`Laezaria Verification Guidelines`)
-            .setDescription('Follow these steps if you are a club member in game but need the <@&259895578421362693> role in discord')
+            .setDescription('Follow these steps if you are a club member in game but need the <@&259895578421362693> role or to update your trove username in discord')
             .setThumbnail("https://cdn.discordapp.com/attachments/1099183091853037608/1099189393811591198/Laezaria-Icon-Round-Transparent_2.png")
             .setImage("https://cdn.discordapp.com/attachments/1099183091853037608/1099221666850160640/image.png")
             .setFields(
