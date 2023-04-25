@@ -361,7 +361,7 @@ module.exports = {
             )
 
             const embed2 = new EmbedBuilder()
-            .setTitle("Application to join Laezaaria Unsuccessful")
+            .setTitle("Application to join Laezaria Unsuccessful")
             .setDescription(`${denyReasonFinal}`)
             .setThumbnail(thumbnail)
             .setAuthor(
@@ -381,7 +381,7 @@ module.exports = {
             } catch (error) {
                 console.error(error)
             }
-            
+
             editMessage.edit({ content: denyReasonFinal, embeds: [embed], components: [] })
 
             interaction.reply({content: "Deny Successful", ephemeral: true})
