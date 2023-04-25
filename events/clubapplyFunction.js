@@ -174,6 +174,8 @@ module.exports = {
             const row = new ActionRowBuilder()
             .addComponents(clubApprove, clubDeny)
 
+            const user = await interaction.client.users.fetch(interaction.user.id)
+
             await interaction.reply({
                 content: "Request Sent",
                 ephemeral: true
@@ -181,6 +183,12 @@ module.exports = {
 
             await inboxChannel.send({ embeds: [embed], components: [row] })
 
+            try {
+                await user.send({ content: `<@${interaction.user.id}> Your Club Application to THE NORTH has been sent, Please be patient for the results.`})
+            } catch (error) {
+                console.error(error)
+            }
+            
             setTimeout(async () => {
                 try {
                     await interaction.deleteReply()
