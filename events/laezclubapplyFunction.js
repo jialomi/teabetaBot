@@ -19,19 +19,16 @@ module.exports = {
             const guild = interaction.guild
             const member = await guild.members.fetch(interaction.user.id)
 
-            /*if (member.roles.cache.has(memberRole)) {
-                interaction.reply({ content: "You are already a member of Laezaria", ephemeral: true})
+            if (member.roles.cache.has(laezmemberRole)) {
 
-                setTimeout(async () => {
-                    try {
-                        await interaction.deleteReply()
-                    } catch (error) {
-                        console.error(error)
-                    }
-                }, 1000 * 60 )
+                const modal = new ModalBuilder()
+                .setCustomId("laezalrClubMember")
+                .setTitle("You are already a Club Member of Laezaria")
+
+                await interaction.showModal(modal)
 
                 return;
-            }*/
+            }
 
             
             const modal = new ModalBuilder()
@@ -252,8 +249,7 @@ module.exports = {
             
             try {
                 const userMember = await interaction.guild.members.fetch(discordID)
-                const memberRole = await interaction.guild.roles.cache.find((r) => r.name === 'Trove Club Member')
-                await userMember.roles.add(memberRole)
+                await userMember.roles.add(laezmemberRole)
                 await userMember.setNickname(ign)
             } catch (error) {
                 console.log(error)
