@@ -21,11 +21,11 @@ module.exports = {
 
             if (member.roles.cache.has(laezmemberRole)) {
 
-                const modal = new ModalBuilder()
-                .setCustomId("laezalrClubMember")
-                .setTitle("You are already a Club Member of Laezaria")
+                interaction.reply({ content: "You are already a Club Member of Laezaria", ephemeral: true })
 
-                await interaction.showModal(modal)
+                setTimeout(async () => {
+                    interaction.deleteReply()
+                },5000)
 
                 return;
             }
