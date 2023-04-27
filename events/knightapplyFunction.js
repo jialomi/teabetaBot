@@ -20,7 +20,7 @@ module.exports = {
                     await interaction.deleteReply()
                 },5000)
 
-                return;
+                return
             }
 
             const modal = new ModalBuilder()
