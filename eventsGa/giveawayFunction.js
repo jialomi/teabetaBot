@@ -904,9 +904,15 @@ module.exports = {
 
                 gamessage.edit({ embeds: [embed]})
 
-                channel.send({ content: `Winner rerolled to ${winnersText.join("\n")}`})
+                gamessage.reply({ content: `Winner rerolled to ${winnersText.join("\n")}`})
                 
             }
+
+            interaction.reply({ content: "Successful Reroll", ephemeral: true })
+
+            setTimeout(async () => {
+                interaction.deleteReply()
+            },5000)
         }
     }
 }
