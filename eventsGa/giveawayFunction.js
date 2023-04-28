@@ -238,7 +238,6 @@ module.exports = {
                         },
                     )
                     await gamessage.edit({ embeds: [giveawayEmbed], components: [row2] })
-                    await channel.send(`winner is ${winnersText.join('\n')}`)
                     clearInterval(entryCountInterval)
                 }, timeLeft)
 
