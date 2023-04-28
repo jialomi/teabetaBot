@@ -682,7 +682,6 @@ module.exports = {
                 interaction.reply({ content: "You have already entered this giveaway from this server.", ephemeral: true })
                 return
             }
-            
 
             if (dbParticipants === "") {
                 dbParticipants = `${interaction.user.id},${interaction.guild.name}`
