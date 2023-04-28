@@ -88,6 +88,18 @@ module.exports = {
                     name: "Number of Entries",
                     value: "0"
                 },
+                {
+                    name: "Winner(s)",
+                    value: 'Not Decided'
+                },
+                {
+                    name: "Message IDs",
+                    value: 'None'
+                },
+                {
+                    name: "Channel IDs",
+                    value: `${interaction.fields.getTextInputValue("giveawayChannels")}`
+                }
             )
 
             const dbmessage = await dbchannel.send({ embeds: [dbEmbed] })
@@ -132,12 +144,68 @@ module.exports = {
             .setComponents(garerollButton)
 
             let isFirstLoop = true;
-            let isFirstLoopDel = true;
+            let isFirstLoopWinner = true;
             for (const channelID of giveawayChannels) {
 
                 console.log(channelID)
                 const gachannel = await interaction.client.channels.cache.get(channelID)
                 const gamessage = await gachannel.send({ embeds: [giveawayEmbed], components: [row] })
+
+                const dbembed = await dbmessage.embeds
+                const embedMessage = dbembed[0]
+                const gaChannelId = embedMessage.fields[9].value
+                let gaMessageId = embedMessage.fields[8].value
+
+                if (gaMessageId === 'None') {
+                    gaMessageId = gamessage.id
+                } else {
+                    gaMessageId = `${gaMessageId},${gamessage.id}`
+                }
+                const updateEmbed = new EmbedBuilder()
+                .setTitle("Giveaway Database Created")
+                .setFields(
+                    {
+                        name: "Duration",
+                        value: `${giveawayDuration}, ends at <t:${unixEndTimeStamp}:f>`
+                    },
+                    {
+                        name: "Number Of Winners",
+                        value: `${giveawayNumberOfWinners}`
+                    },
+                    {
+                        name: "Prize",
+                        value: `${giveawayPrize}`
+                    },
+                    {
+                        name: "Description",
+                        value: `${giveawayDesc}`
+                    },
+                    {
+                        name: "Participants",
+                        value: ` `
+                    },
+                    {
+                        name: "Database Channel",
+                        value: `${channel.id}`
+                    },
+                    {
+                        name: "Number of Entries",
+                        value: "0"
+                    },
+                    {
+                        name: "Winner(s)",
+                        value: 'Not Decided'
+                    },
+                    {
+                        name: "Message IDs",
+                        value: `${gaMessageId}`
+                    },
+                    {
+                        name: "Channel IDs",
+                        value: `${gaChannelId}`
+                    }
+                )
+                dbmessage.edit({ embeds: [updateEmbed] })
                 
                 if (isFirstLoop) {
                     await interaction.reply({ content: "Giveaway Started", ephemeral: true })
@@ -182,8 +250,55 @@ module.exports = {
                 const timeoutId = setTimeout(async () => {
                     const gaEmbed = dbmessage.embeds
                     const embedMessage = gaEmbed[0]
-                    const dbParticipants = embedMessage.fields[4].value
                     let gaEntriesCount = embedMessage.fields[6].value
+                    const winner = embedMessage.fields[7].value
+
+                    giveawayEmbed.setTitle(`${giveawayPrize}`)
+                    .setDescription(`${giveawayDesc}`)
+                    .setTimestamp()
+                    .setFields(
+                    {
+                            name: "Giveaway ID",
+                            value: `${dbmessage.id}`
+                        },
+                        {
+                            name: "Ended at",
+                            value: `<t:${unixEndTimeStamp}:f>`,
+                        },
+                        {
+                            name: "Hosted By",
+                            value: `<@${interaction.user.id}>`
+                        },
+                        {
+                            name: "Winner(s)",
+                            value: `${winner}`
+                        },
+                        {
+                            name: "Entries",
+                            value: `${gaEntriesCount}`
+                        },
+                    )
+                    await gamessage.edit({ embeds: [giveawayEmbed], components: [row2] })
+                    clearInterval(entryCountInterval)
+                }, timeLeft)
+
+                const timeoutId2 = setTimeout(async () => {
+
+                    gamessage.edit({ components: [] })
+
+                    if (isFirstLoopWinner === false ) {
+                        console.log("not first loop!")
+                        return
+                    }
+
+                    isFirstLoopWinner = false
+
+                    const gaEmbed = dbmessage.embeds
+                    const embedMessage = gaEmbed[0]
+                    const dbParticipants = embedMessage.fields[4].value
+                    const gaEntriesCount = embedMessage.fields[6].value
+                    const dbMessageIDs = embedMessage.fields[8].value
+                    const dbChannelIDs = embedMessage.fields[9].value
 
                     if (dbParticipants !== '') await channel.send(`${dbParticipants}\n`)
                     const messages = await channel.messages.fetch()
@@ -209,40 +324,56 @@ module.exports = {
                         winners.push("Not Decided Yet")
                         winnersText.push("Not Decided Yet")
                     }
+
                     console.log(winnersText)
                     console.log(winnersText.join('\n'))
 
-                    giveawayEmbed.setTitle(`${giveawayPrize}`)
-                    .setDescription(`${giveawayDesc}`)
-                    .setTimestamp()
+                    const embed = new EmbedBuilder()
+                    .setTitle("Giveaway Database Created")
                     .setFields(
-                    {
-                            name: "Giveaway ID",
-                            value: `${dbmessage.id}`
+                        {
+                            name: "Duration",
+                            value: `${giveawayDuration}, ends at <t:${unixEndTimeStamp}:f>`
                         },
                         {
-                            name: "Ended at",
-                            value: `<t:${unixEndTimeStamp}:f>`,
+                            name: "Number Of Winners",
+                            value: `${giveawayNumberOfWinners}`
                         },
                         {
-                            name: "Hosted By",
-                            value: `<@${interaction.user.id}>`
+                            name: "Prize",
+                            value: `${giveawayPrize}`
+                        },
+                        {
+                            name: "Description",
+                            value: `${giveawayDesc}`
+                        },
+                        {
+                            name: "Participants",
+                            value: `${dbParticipants}`
+                        },
+                        {
+                            name: "Database Channel",
+                            value: `${channel.id}`
+                        },
+                        {
+                            name: "Number of Entries",
+                            value: `${gaEntriesCount}`
                         },
                         {
                             name: "Winner(s)",
-                            value: `${winnersText.join('\n')}`
+                            value: `${winnersText.join("\n")}`
                         },
                         {
-                            name: "Entries",
-                            value: `${gaEntriesCount}`
+                            name: "Message IDs",
+                            value: `${dbMessageIDs}`
                         },
+                        {
+                            name: "Channel IDs",
+                            value: `${dbChannelIDs}`
+                        }
                     )
-                    await gamessage.edit({ embeds: [giveawayEmbed], components: [row2] })
-                    clearInterval(entryCountInterval)
-                }, timeLeft)
 
-                const timeoutId2 = setTimeout(async () => {
-                    gamessage.edit({ components: [] })
+                    dbmessage.edit({ embeds: [embed]})
                 },timeLeft - 2000)
                 /*countdownInterval = setInterval(async () => {
                     const currentTime = new Date(Date.now())
@@ -508,6 +639,8 @@ module.exports = {
             const dbDescription = dbEmbedMessage.fields[3].value
             const dbchannelID = dbEmbedMessage.fields[5].value
             const dbNumberOfEntries = dbEmbedMessage.fields[6].value
+            const dbMessageIDs = dbEmbedMessage.fields[8].value
+            const dbChannelIDs = dbEmbedMessage.fields[9].value
             let dbParticipants = dbEmbedMessage.fields[4].value
 
             let test = `${interaction.user.id}`
@@ -593,6 +726,18 @@ module.exports = {
                     {
                         name: "Number of Entries",
                         value: `${parseInt(dbNumberOfEntries) + 1}`
+                    },
+                    {
+                        name: "Winner(s)",
+                        value: 'Not Decided'
+                    },
+                    {
+                        name: "Message IDs",
+                        value: `${dbMessageIDs}`
+                    },
+                    {
+                        name: "Channel IDs",
+                        value: `${dbChannelIDs}`
                     }
                 )
                 dbmessage.edit({ embeds: [resetEmbed] })
@@ -627,6 +772,18 @@ module.exports = {
                     {
                         name: "Number of Entries",
                         value: `${parseInt(dbNumberOfEntries) + 1}`
+                    },
+                    {
+                        name: "Winner(s)",
+                        value: 'Not Decided'
+                    },
+                    {
+                        name: "Message IDs",
+                        value: `${dbMessageIDs}`
+                    },
+                    {
+                        name: "Channel IDs",
+                        value: `${dbChannelIDs}`
                     }
                 )
                 dbmessage.edit({ embeds: [embed] })
@@ -676,7 +833,7 @@ module.exports = {
             const gaID = embedMessage.fields[0].value
             const gaDuration = embedMessage.fields[1].value
             const gaHost = embedMessage.fields[2].value
-            const gaEntries = embedMessage.fields[2].value
+            const gaEntries = embedMessage.fields[4].value
 
             const dbchannel = await interaction.client.channels.cache.get(giveawayDatabaseChannelID)
             const dbmessage = await dbchannel.messages.fetch(gaID)
@@ -685,6 +842,8 @@ module.exports = {
             const dbEmbedMessage = dbEmbed[0]
             const giveawayNumberOfWinners = parseInt(dbEmbedMessage.fields[1].value)
             const dbchannelID = dbEmbedMessage.fields[5].value
+            const gaMessageIDs = dbEmbedMessage.fields[8].value.split(",")
+            const gaChannelIDs = dbEmbedMessage.fields[9].value.split(",")
 
             const channel = await interaction.client.channels.cache.get(dbchannelID)
             const messages = await channel.messages.fetch()
@@ -709,38 +868,46 @@ module.exports = {
                 winners.push("Not Decided Yet")
                 winnersText.push("Not Decided Yet")
             }
-            
-            const gamessage = await interaction.channel.messages.fetch(interaction.message.id)
-            
-            const embed = new EmbedBuilder()
-            .setTitle(`${gaPrize}`)
-            .setDescription(`${gaDescription}`)
-            .setFields(
-                {
-                    name: "Giveaway ID",
-                    value: `${gaID}`
-                },
-                {
-                    name: "Ended at",
-                    value: `${gaDuration}`
-                },
-                {
-                    name: "Hosted By",
-                    value: `${gaHost}`
-                },
-                {
-                    name: "Winner(s)",
-                    value: `${winnersText.join("\n")}`
-                },
-                {
-                    name: "Entries",
-                    value: `${gaEntries}`
-                }
-            )
 
-            gamessage.edit({ embeds: [embed]})
+            let i = 0;
 
-            interaction.reply({ content: `Winner rerolled to ${winnersText.join("\n")}`})
+            for (const channelID of gaChannelIDs) {
+                
+                const channel = await interaction.client.channels.cache.get(channelID)
+                const gamessage = await channel.messages.fetch(gaMessageIDs[i])
+                i = i + 1
+
+                const embed = new EmbedBuilder()
+                .setTitle(`${gaPrize}`)
+                .setDescription(`${gaDescription}`)
+                .setFields(
+                    {
+                        name: "Giveaway ID",
+                        value: `${gaID}`
+                    },
+                    {
+                        name: "Ended at",
+                        value: `${gaDuration}`
+                    },
+                    {
+                        name: "Hosted By",
+                        value: `${gaHost}`
+                    },
+                    {
+                        name: "Winner(s)",
+                        value: `${winnersText.join("\n")}`
+                    },
+                    {
+                        name: "Entries",
+                        value: `${gaEntries}`
+                    }
+                )
+
+                gamessage.edit({ embeds: [embed]})
+
+                channel.send({ content: `Winner rerolled to ${winnersText.join("\n")}`})
+                
+            }
         }
     }
 }
