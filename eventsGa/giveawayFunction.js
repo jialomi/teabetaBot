@@ -839,8 +839,14 @@ module.exports = {
 
             const dbEmbed = dbmessage.embeds
             const dbEmbedMessage = dbEmbed[0]
+            const dbTitle = dbEmbedMessage.title
+            const dbDuration = dbEmbedMessage.fields[0].value
             const giveawayNumberOfWinners = parseInt(dbEmbedMessage.fields[1].value)
+            const dbPrize = dbEmbedMessage.fields[2].value
+            const dbDescription = dbEmbedMessage.fields[3].value
+            const dbParticipants = dbEmbedMessage.fields[4].value
             const dbchannelID = dbEmbedMessage.fields[5].value
+            const dbNumberOfEntries = dbEmbedMessage.fields[6].value
             const gaMessageIDs = dbEmbedMessage.fields[8].value.split(",")
             const gaChannelIDs = dbEmbedMessage.fields[9].value.split(",")
 
@@ -867,6 +873,53 @@ module.exports = {
                 winners.push("Not Decided Yet")
                 winnersText.push("Not Decided Yet")
             }
+
+            const updateEmbed = new EmbedBuilder()
+            .setTitle(`${dbTitle}`)
+            .setFields(
+                {
+                    name: "Duration",
+                    value: `${dbDuration}`
+                },
+                {
+                    name: "Number of Winners",
+                    value: `${giveawayNumberOfWinners}`
+                },
+                {
+                    name: "Prize",
+                    value: `${dbPrize}`
+                },
+                {
+                    name: "Description",
+                    value: `${dbDescription}`
+                },
+                {
+                    name: "Participants",
+                    value: `${dbParticipants}`
+                },
+                {
+                    name: "Database Channel",
+                    value: `${dbchannelID}`
+                },
+                {
+                    name: "Number of Entries",
+                    value: `${dbNumberOfEntries}`
+                },
+                {
+                    name: "Winner(s)",
+                    value: `${winnersText.join("\n")}`
+                },
+                {
+                    name: "Message IDs",
+                    value: `${dbEmbedMessage.fields[8].value}`
+                },
+                {
+                    name: "Channel IDs",
+                    value: `${dbEmbedMessage.fields[9].value}`
+                }
+            )
+
+            await dbmessage.edit({ embeds: [updateEmbed] })
 
             let i = 0;
 
