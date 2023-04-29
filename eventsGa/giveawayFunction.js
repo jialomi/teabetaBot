@@ -400,18 +400,18 @@ module.exports = {
                         }
                     )
 
-                    const getPrizeButton = new ButtonBuilder()
-                    .setCustomId('getPrizeButton')
-                    .setLabel("Get Prize")
+                    const readyPrizeButton = new ButtonBuilder()
+                    .setCustomId('readyPrizeButton')
+                    .setLabel("Ready To Claim")
                     .setStyle("Success")
 
-                    const getPrizeRow = new ActionRowBuilder()
-                    .setComponents(getPrizeButton)
+                    const readyPrizeRow = new ActionRowBuilder()
+                    .setComponents(readyPrizeButton)
 
                     for (const winner of winners) {
                         try {
                             const user = await interaction.client.users.fetch(winner)
-                            await user.send({ content: `Congratulations <@${winner}> ! You have won a giveaway.`, embeds: [dmEmbed], components: [getPrizeRow] })
+                            await user.send({ content: `Congratulations <@${winner}> ! You have won a giveaway.`, embeds: [dmEmbed], components: [readyPrizeRow] })
                         } catch (error) {
                             console.error(error)
                         }
@@ -1027,18 +1027,18 @@ module.exports = {
                         }
                     )
 
-                    const getPrizeButton = new ButtonBuilder()
-                    .setCustomId('getPrizeButton')
-                    .setLabel("Get Prize")
+                    const readyPrizeButton = new ButtonBuilder()
+                    .setCustomId('readyPrizeButton')
+                    .setLabel("Ready To Claim")
                     .setStyle("Success")
 
-                    const getPrizeRow = new ActionRowBuilder()
-                    .setComponents(getPrizeButton)
+                    const readyPrizeRow = new ActionRowBuilder()
+                    .setComponents(readyPrizeButton)
 
             for (const winner of winners) {
                 try {
                     const user = await interaction.client.users.fetch(winner)
-                    await user.send({ content: `Congratulations <@${winner}> ! You have won a giveaway.`, embeds: [dmEmbed], components: [getPrizeRow] })
+                    await user.send({ content: `Congratulations <@${winner}> ! You have won a giveaway.`, embeds: [dmEmbed], components: [readyPrizeRow] })
                 } catch (error) {
                     console.error(error)
                 }
@@ -1051,7 +1051,7 @@ module.exports = {
             },5000)
         }
 
-        if (interaction.customId === "getPrizeButton") {
+        if (interaction.customId === "readyPrizeButton") {
 
             interaction.reply({content: "SIKE BITCH YOU THOUGHT"})
 
