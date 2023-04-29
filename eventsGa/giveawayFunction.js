@@ -325,6 +325,7 @@ module.exports = {
                         winnersText.push("Not Decided Yet")
                     }
 
+                    console.log(winners)
                     console.log(winnersText)
                     console.log(winnersText.join('\n'))
 
@@ -373,7 +374,48 @@ module.exports = {
                         }
                     )
 
-                    dbmessage.edit({ embeds: [embed]})
+                    dbmessage.edit({ embeds: [embed] })
+
+                    const dmEmbed = new EmbedBuilder()
+                    .setTitle(`${giveawayPrize}`)
+                    .setDescription(`${giveawayDesc}`)
+                    .setAuthor(
+                        {
+                            name: interaction.client.user.username,
+                            iconURL: interaction.client.user.displayAvatarURL()
+                        }
+                    )
+                    .setFields(
+                        {
+                            name: "Hosted By",
+                            value: `<@${interaction.user.id}>`
+                        },
+                        {
+                            name: "Giveaway ID",
+                            value: `${dbmessage.id}`
+                        },
+                        {
+                            name: "Instructions",
+                            value: "Once ready to collect your Prize, please click the Get Prize button below. The Host will contact you within 24 Hours to give you your prize. If you have not received any contact from the Host within 24 Hours, feel free to drop a DM to the host."
+                        }
+                    )
+
+                    const getPrizeButton = new ButtonBuilder()
+                    .setCustomId('getPrizeButton')
+                    .setLabel("Get Prize")
+                    .setStyle("Success")
+
+                    const getPrizeRow = new ActionRowBuilder()
+                    .setComponents(getPrizeButton)
+
+                    for (const winner of winners) {
+                        try {
+                            const user = await interaction.client.users.fetch(winner)
+                            await user.send({ content: `Congratulations <@${winner}> ! You have won a giveaway.`, embeds: [dmEmbed], components: [getPrizeRow] })
+                        } catch (error) {
+                            console.error(error)
+                        }
+                    }
                 },timeLeft - 2000)
                 /*countdownInterval = setInterval(async () => {
                     const currentTime = new Date(Date.now())
@@ -961,7 +1003,57 @@ module.exports = {
                 
             }
 
+            const dmEmbed = new EmbedBuilder()
+                    .setTitle(`${gaPrize}`)
+                    .setDescription(`${gaDescription}`)
+                    .setAuthor(
+                        {
+                            name: interaction.client.user.username,
+                            iconURL: interaction.client.user.displayAvatarURL()
+                        }
+                    )
+                    .setFields(
+                        {
+                            name: "Hosted By",
+                            value: `<@${interaction.user.id}>`
+                        },
+                        {
+                            name: "Giveaway ID",
+                            value: `${dbmessage.id}`
+                        },
+                        {
+                            name: "Instructions",
+                            value: "Once ready to collect your Prize, please click the Get Prize button below. The Host will contact you within 24 Hours to give you your prize. If you have not received any contact from the Host within 24 Hours, feel free to drop a DM to the host."
+                        }
+                    )
+
+                    const getPrizeButton = new ButtonBuilder()
+                    .setCustomId('getPrizeButton')
+                    .setLabel("Get Prize")
+                    .setStyle("Success")
+
+                    const getPrizeRow = new ActionRowBuilder()
+                    .setComponents(getPrizeButton)
+
+            for (const winner of winners) {
+                try {
+                    const user = await interaction.client.users.fetch(winner)
+                    await user.send({ content: `Congratulations <@${winner}> ! You have won a giveaway.`, embeds: [dmEmbed], components: [getPrizeRow] })
+                } catch (error) {
+                    console.error(error)
+                }
+            }
+
             interaction.reply({ content: "Successful Reroll", ephemeral: true })
+
+            setTimeout(async () => {
+                interaction.deleteReply()
+            },5000)
+        }
+
+        if (interaction.customId === "getPrizeButton") {
+
+            interaction.reply({content: "SIKE BITCH YOU THOUGHT"})
 
             setTimeout(async () => {
                 interaction.deleteReply()
