@@ -341,5 +341,34 @@ module.exports = {
                 return
             }
         }
+
+        if (interaction.commandName === "cleardbchannel") {
+            try {
+
+                const guild = await interaction.client.guilds.cache.get('1097357158452047952')
+                const channels = await guild.channels.cache.filter(channel => channel.parentId === "1098787237593878619")
+                const channelIDs = await channels.map(channel => channel.id)
+                
+                for (const channelID of channelIDs) {
+                    const channel = await guild.channels.cache.get(channelID)
+                    await channel.delete()
+                }
+
+                interaction.reply({ content: "Database Channels Cleared", ephemeral: true })
+
+                setTimeout(async () => {
+                    interaction.deleteReply()
+                }, 5000)
+
+            } catch (error) {
+                console.error(error)
+                interaction.reply({ content: "Failed to Clear all Database Channel", ephemeral: true })
+
+                setTimeout(async () => {
+                    interaction.deleteReply()
+                }, 5000);
+                return
+            }
+        }
     }
 }
