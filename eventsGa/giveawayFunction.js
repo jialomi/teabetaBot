@@ -1053,6 +1053,8 @@ module.exports = {
 
         if (interaction.customId === "readyPrizeButton") {
 
+            
+
             interaction.reply({content: "SIKE BITCH YOU THOUGHT"})
 
             setTimeout(async () => {

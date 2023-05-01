@@ -1,4 +1,4 @@
-const { AttachmentBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require("discord.js")
+const { AttachmentBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, WebhookClient } = require("discord.js")
 
 const memberRole = "288385193285386248"
 const guestRole = "615837413117526027"

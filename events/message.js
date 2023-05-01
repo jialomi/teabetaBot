@@ -475,6 +475,19 @@ module.exports = {
 
             message.channel.send({ embeds: [verifyEmbed], components: [verifyRow]})
         }
+
+        if (message.content.toLocaleLowerCase() === "whats my iq") {
+
+            const IQ = random(0,200)
+        
+            message.reply(`Your IQ is ${IQ} <@${message.author.id}>`)
+        }
+        
+        if (message.content.toLocaleLowerCase().startsWith("whats") && matches && message.content.toLocaleLowerCase().includes('iq')) {
+            const taggedUserId = matches[0].slice(2, -1);
+            const IQ = random(0,200)
+            message.reply(`<@${taggedUserId}>'s IQ is ${IQ}`)
+        }
     }
 
 }
