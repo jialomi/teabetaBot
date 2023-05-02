@@ -19,13 +19,25 @@ module.exports = {
 
         if (message.content.toLocaleLowerCase() === "whats my iq") {
 
+            if (message.author.id === "121018858042556416") {
+                const IQ = random(151,300)
+                message.reply(`Your IQ is ${IQ} <@${message.author.id}>`)
+                return
+            }
+
             const IQ = random(0,200)
-        
             message.reply(`Your IQ is ${IQ} <@${message.author.id}>`)
         }
         
         if (message.content.toLocaleLowerCase().startsWith("whats") && matches && message.content.toLocaleLowerCase().includes('iq')) {
             const taggedUserId = matches[0].slice(2, -1);
+
+            if (taggedUserId === "121018858042556416") {
+                const IQ = random(151,300)
+                message.reply(`<@${taggedUserId}>'s IQ is ${IQ}`)
+                return
+            }
+
             const IQ = random(0,200)
             message.reply(`<@${taggedUserId}>'s IQ is ${IQ}`)
         }
