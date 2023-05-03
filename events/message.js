@@ -38,6 +38,12 @@ module.exports = {
                 return
             }
 
+            if (taggedUserId === "724956641023492116") {
+                const IQ = random(0,50)
+                message.reply(`<@${taggedUserId}>'s IQ is ${IQ}`)
+                return
+            }
+
             const IQ = random(0,200)
             message.reply(`<@${taggedUserId}>'s IQ is ${IQ}`)
         }
