@@ -90,17 +90,7 @@ module.exports = {
         if (message.content.startsWith("!purge") && message.author.id === "998246368512585800") {
             console.log('purging')
             const amount = parseInt(message.content.split(" ")[1])
-            message.channel.bulkDelete(amount+1)
-
-            const tempMessage = message.channel.send({ content: `Purged ${amount} messages`})
-
-            setTimeout(async () => {
-                try {
-                    tempMessage.delete()
-                } catch (error) {
-                    console.error()
-                }
-            },5000)
+            await message.channel.bulkDelete(amount+1)
         }
         
         /*
