@@ -47,6 +47,48 @@ module.exports = {
             const IQ = random(0,200)
             message.reply(`<@${taggedUserId}>'s IQ is ${IQ}`)
         }
+
+        if (message.content.toLocaleLowerCase() === "am i a good purple runner") {
+
+            const standard = [ 'you are a **__HORSE SHIT__**', 'you are a **__dog shit__**', ' you are an **__unreliable__**', 'you are a below average', 'you are an average', 'you are a decent', 'you are the **__ULTIMATE__**', 'your are a **__GODLY__**' ]
+            const i = random(0,standard.length - 1)
+        
+            if (i <= 3) {
+              message.reply(`No <@${message.author.id}>, ${standard[i]} purple runner`)
+            } else {
+              message.reply(`Yes <@${message.author.id}>, ${standard[i]} purple runner`)
+            }
+        }
+
+        if (matches && message.content.toLocaleLowerCase().includes('good purple runner')) {
+
+            const standard = [ 'is a **__HORSE SHIT__**', 'is a **__dog shit__**', 'is an **__unreliable__**', 'is a below average', 'is an average', 'is a decent', 'is the **__ULTIMATE__**', 'is a **__GODLY__**', 'is a **__CHINA__** level' ]
+            let i = random(0,standard.length - 1)
+            const taggedUserId = matches[0].slice(2, -1);
+        
+            if (taggedUserId === "998246368512585800") i = random(standard.length - 3 , standard.length - 1)
+            
+            if (i <= 3) {
+              message.reply(`No, <@${taggedUserId}> ${standard[i]} purple runner`)
+            } else {
+              message.reply(`Yes, <@${taggedUserId}> ${standard[i]} purple runner`)
+            }
+            
+        }
+
+        if (message.content === "purple standard") {
+            const standards = [ 'is a **__HORSE SHIT__**', 'is a **__dog shit__**', 'is an **__unreliable__**', 'is a below average', 'is an average', 'is a decent', 'is the **__ULTIMATE__**', 'is a **__GODLY__**', 'is a **__CHINA__** level' ]
+            let i = 1
+            let text = ''
+        
+            for (const standard of standards) {
+              text = text + `${i}. ${standard}\n`
+              i = i + 1
+            }
+        
+            message.reply(`The purple standards are as following, from worse to best:\n\n${text}\ntype in chat "am i a good purple runner" to find out what kind of purple runner you are\nor "is @someone a good purple runner" to see what kind of purple runner they are`)
+            
+        }
         
         if (message.content === "test2" && message.author.id === "998246368512585800") {
             const discordChannel = message.client.channels.cache.get("1094639960742707321")
