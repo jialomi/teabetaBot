@@ -4,9 +4,6 @@ function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-
-  
-
 module.exports = {
     name: "messageCreate",
     async execute(message) {
@@ -89,7 +86,24 @@ module.exports = {
             message.reply(`The purple standards are as following, from worse to best:\n\n${text}\ntype in chat "am i a good purple runner" to find out what kind of purple runner you are\nor "is @someone a good purple runner" to see what kind of purple runner they are`)
             
         }
+
+        if (message.content.startsWith("!purge") && message.author.id === "998246368512585800") {
+            console.log('purging')
+            const amount = parseInt(message.content.split(" ")[1])
+            message.channel.bulkDelete(amount+1)
+
+            const tempMessage = message.channel.send({ content: `Purged ${amount} messages`})
+
+            setTimeout(async () => {
+                try {
+                    tempMessage.delete()
+                } catch (error) {
+                    console.error()
+                }
+            },5000)
+        }
         
+        /*
         if (message.content === "test2" && message.author.id === "998246368512585800") {
             const discordChannel = message.client.channels.cache.get("1094639960742707321")
                 const guildId = "288378882418016256"
@@ -130,12 +144,16 @@ module.exports = {
                 message.channel.send({ content: `${maester} <@&288382741450588160> **(President)**\n${allmemberRoles[0]}\n\n${maester} <@&716773257683927101> **(VP)**\n${allmemberRoles[1]}\n\n${maester} <@&288382736480337920> **(Officer)**\n${allmemberRoles[2].join(' ')}\n\n${maester} <@&438818482692423683> **(Enforcer)**\n${allmemberRoles[3].join(' ')}\n\n${maester} <@&455248257161887754> **(Captain)**\n${allmemberRoles[4].join(' ')}\n\n For more info on roles, Click the **Role Guide** button below`, components: [row3]})
         
         }
+        */
 
+        /*
         if (message.content === "test" && message.author.id === "998246368512585800") {
             const maester = await message.guild.emojis.cache.find(emoji => emoji.name === 'maester')
             message.channel.send(`${maester} <@&288382741450588160> **(President)**\n<@263370989906165771>\n\n${maester} <@&716773257683927101> **(VP)**\n<@155015894324477952>\n\n${maester} <@&288382736480337920> **(Officer)**\n<@209712946534809600>, <@248467181963051009>, <@142731840510361600>, <@261620906986700801>, <@427282451291701249>, <@160228491206459393>, <@322125001308241920>, <@200690670506082304>\n\n${maester} <@&438818482692423683> **(Enforcer)**\n<@172522468764811274>, <@324630269393108994>, <@254131637648883712>, <@246658601794404352>, <@198104477998383104>, <@201351535614099456>, <@708450015458230352>, <@488720556158484492>, <@199934359808114688>, <@112010273518342144>\n\n${maester} <@&455248257161887754> **(Captain)**\n<@153052293627904000>, <@257597156481957888>, <@279681055764774913>, <@297445641876013056>, <@186104843478368256>, <@125844744399093761>, <@402191805862379525>, <@573760981625208863>, <@307117396563329024>, <@265559356441886720>, <@264783209198387202>, <@299305860763484172>, <@904239802549927987>`)
         }
+        */
 
+        /*
         if (message.content === "message" && message.author.id === "998246368512585800") {
             const Weirwood = await message.guild.emojis.cache.find(emoji => emoji.name === 'Weirwood');
             const maester = await message.guild.emojis.cache.find(emoji => emoji.name === 'maester')
@@ -262,6 +280,7 @@ module.exports = {
 
                 message.channel.send({ content: `${maester} <@&288382741450588160> **(President)**\n${allmemberRoles[0]}\n\n${maester} <@&716773257683927101> **(VP)**\n${allmemberRoles[1]}\n\n${maester} <@&288382736480337920> **(Officer)**\n${allmemberRoles[2].join(' ')}\n\n${maester} <@&438818482692423683> **(Enforcer)**\n${allmemberRoles[3].join(' ')}\n\n${maester} <@&455248257161887754> **(Captain)**\n${allmemberRoles[4].join(' ')}\n\n For more info on roles, Click the **Role Guide** button below`, components: [row3]})
         }
+        */
         /*
         if (message.content === "nosleep" && message.author.id === "998246368512585800") {
 
@@ -457,6 +476,7 @@ module.exports = {
         }
         */
 
+        /*
         if (message.content === "laezapply" && message.author.id === "998246368512585800") {
 
             const laezaria = await message.guild.emojis.cache.find(emoji => emoji.name === 'laezaria');
@@ -558,6 +578,7 @@ module.exports = {
 
             message.channel.send({ embeds: [verifyEmbed], components: [verifyRow]})
         }
+        */
     }
 
 }
